@@ -1,0 +1,18 @@
+language: rust
+
+matrix:
+  include:
+    - rust: stable
+    - rust: beta
+    - rust: nightly
+
+script:
+  - rustc --version
+  - cargo --version
+  - cargo test --all --verbose
+  - cargo build
+
+notifications:
+  email:
+    - on_success: change
+    - on_failure: always
