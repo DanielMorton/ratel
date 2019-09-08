@@ -1,9 +1,24 @@
-fn arg_max<N>(vec: Vec<N>) -> usize {
-    let am = |am: (usize, N), x: &(usize, N)| if am.1 > x.1 { am } else { x };
-    vec.iter().enumerate().fold((0, vec[0]), am).0
+use std::cmp::PartialOrd;
+
+pub fn arg_max<N: PartialOrd>(vec: &Vec<N>) -> usize {
+    vec.iter().enumerate().max_by(|a, b| (a.1).partial_cmp(b.1).unwrap()).unwrap().0
 }
 
-fn arg_min<N>(vec: Vec<N>) -> usize {
-    let am = |am: (usize, N), x: &(usize, N)| if am.1 < x.1 { am } else { x };
-    vec.iter().enumerate().fold((0, vec[0]), am).0
+pub fn arg_min<N: PartialOrd>(vec: &Vec<N>) -> usize {
+    vec.iter().enumerate().min_by(|a, b| (a.1).partial_cmp(b.1).unwrap()).unwrap().0
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{arg_max, arg_min};
+
+    lazy_static! {
+        static ref VEC: Vec<i32> = vec![3, 1, 5, 2, 4];
+    }
+
+    #[test]
+    fn test_arg_max() { assert_eq!(arg_max(&VEC), 2) }
+
+    #[test]
+    fn test_arg_min() { assert_eq!(arg_min(&VEC), 1) }
 }
