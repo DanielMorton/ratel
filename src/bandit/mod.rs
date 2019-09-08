@@ -1,6 +1,5 @@
-pub use bandit::Bandit;
+use bandit::Bandit;
 
-use super::util as util;
+use super::util;
 
 mod bandit;
-
