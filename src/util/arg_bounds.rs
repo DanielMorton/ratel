@@ -1,10 +1,10 @@
 use std::cmp::PartialOrd;
 
-pub fn arg_max<N: PartialOrd>(vec: &Vec<N>) -> usize {
+pub fn arg_max<N: PartialOrd>(vec: &[N]) -> usize {
     vec.iter().enumerate().max_by(|a, b| (a.1).partial_cmp(b.1).unwrap()).unwrap().0
 }
 
-pub fn arg_min<N: PartialOrd>(vec: &Vec<N>) -> usize {
+pub fn arg_min<N: PartialOrd>(vec: &[N]) -> usize {
     vec.iter().enumerate().min_by(|a, b| (a.1).partial_cmp(b.1).unwrap()).unwrap().0
 }
 
