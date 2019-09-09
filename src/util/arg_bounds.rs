@@ -5,8 +5,8 @@ pub trait ArgBounds<N: PartialOrd> {
     fn arg_max(&self) -> usize;
     fn arg_min(&self) -> usize;
 
-    fn max(&self) -> N;
-    fn min(&self) -> N;
+    fn val_max(&self) -> N;
+    fn val_min(&self) -> N;
 }
 
 impl<N: PartialOrd + Copy> ArgBounds<N> for Vec<N> {
@@ -26,16 +26,18 @@ impl<N: PartialOrd + Copy> ArgBounds<N> for Vec<N> {
             .0
     }
 
-    fn max(&self) -> N {
+    fn val_max(&self) -> N {
         self.iter()
             .max_by(|a, b| (*a).partial_cmp(*b).unwrap())
-            .map(|x| x.to_owned()).unwrap()
+            .map(|x| x.to_owned())
+            .unwrap()
     }
 
-    fn min(&self) -> N {
+    fn val_min(&self) -> N {
         self.iter()
             .min_by(|a, b| (*a).partial_cmp(*b).unwrap())
-            .map(|x| x.to_owned()).unwrap()
+            .map(|x| x.to_owned())
+            .unwrap()
     }
 }
 
@@ -67,4 +69,25 @@ mod tests {
     fn test_float_arg_min() {
         assert_eq!(FLOAT_VEC.arg_min(), 0)
     }
+
+    #[test]
+    fn test_val_max() {
+        assert_eq!(VEC.val_max(), 92)
+    }
+
+    #[test]
+    fn test_float_val_max() {
+        assert_eq!(FLOAT_VEC.val_max(), 0.93)
+    }
+
+    #[test]
+    fn test_val_min() {
+        assert_eq!(VEC.val_min(), 26)
+    }
+
+    #[test]
+    fn test_float_val_min() {
+        assert_eq!(FLOAT_VEC.val_min(), 0.51)
+    }
+
 }

@@ -1,3 +1,6 @@
+use rand::thread_rng;
+use rand_distr::{Distribution, Normal};
+
 use super::ArgBounds;
 use super::Bandit;
 
@@ -16,6 +19,12 @@ impl Bandit for GaussianBandit {
     }
 
     fn max_reward(&self) -> f64 {
-        self.means.max()
+        self.means.val_max()
+    }
+
+    fn reward(&self, arm: usize) -> f64 {
+        Normal::new(self.means[arm], self.stddevs[arm])
+            .unwrap()
+            .sample(&mut thread_rng())
     }
 }

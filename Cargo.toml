@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 lazy_static = "*"
+rand = "*"
+rand_distr = "*"
