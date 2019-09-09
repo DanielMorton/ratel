@@ -1,3 +1,3 @@
-pub use arg_bounds::{arg_max, arg_min};
+pub use arg_bounds::ArgBounds;
 
 mod arg_bounds;

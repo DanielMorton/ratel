@@ -1,28 +1,12 @@
-use super::util::arg_max;
+pub(super) trait Bandit {
+    fn arms(&self) -> usize;
 
-pub(super) struct Bandit {
-    q_values: Vec<f64>,
+    fn best_arm(&self) -> usize;
+
+    fn max_reward(&self) -> f64;
 }
 
-impl Bandit {
-    fn arms(&self) -> usize {
-        self.q_values.len()
-    }
-
-    fn best_arm(&self) -> usize {
-        arg_max(&self.q_values)
-    }
-
-    fn max_reward(&self) -> f64 {
-        *self
-            .q_values
-            .iter()
-            .max_by(|a, b| a.partial_cmp(b).unwrap())
-            .unwrap()
-    }
-}
-
-#[cfg(test)]
+/*#[cfg(test)]
 mod tests {
     use super::Bandit;
 
@@ -46,4 +30,4 @@ mod tests {
     fn test_max_reward() {
         assert_eq!(BANDIT.max_reward(), 0.99)
     }
-}
+}*/

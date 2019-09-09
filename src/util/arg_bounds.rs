@@ -1,24 +1,47 @@
 use std::cmp::PartialOrd;
+use std::ops::Deref;
 
-pub fn arg_max<N: PartialOrd>(vec: &[N]) -> usize {
-    vec.iter()
-        .enumerate()
-        .max_by(|a, b| (a.1).partial_cmp(b.1).unwrap())
-        .unwrap()
-        .0
+pub trait ArgBounds<N: PartialOrd> {
+    fn arg_max(&self) -> usize;
+    fn arg_min(&self) -> usize;
+
+    fn max(&self) -> N;
+    fn min(&self) -> N;
 }
 
-pub fn arg_min<N: PartialOrd>(vec: &[N]) -> usize {
-    vec.iter()
-        .enumerate()
-        .min_by(|a, b| (a.1).partial_cmp(b.1).unwrap())
-        .unwrap()
-        .0
+impl<N: PartialOrd + Copy> ArgBounds<N> for Vec<N> {
+    fn arg_max(&self) -> usize {
+        self.iter()
+            .enumerate()
+            .max_by(|a, b| (a.1).partial_cmp(b.1).unwrap())
+            .unwrap()
+            .0
+    }
+
+    fn arg_min(&self) -> usize {
+        self.iter()
+            .enumerate()
+            .min_by(|a, b| (a.1).partial_cmp(b.1).unwrap())
+            .unwrap()
+            .0
+    }
+
+    fn max(&self) -> N {
+        self.iter()
+            .max_by(|a, b| (*a).partial_cmp(*b).unwrap())
+            .map(|x| x.to_owned()).unwrap()
+    }
+
+    fn min(&self) -> N {
+        self.iter()
+            .min_by(|a, b| (*a).partial_cmp(*b).unwrap())
+            .map(|x| x.to_owned()).unwrap()
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{arg_max, arg_min};
+    use super::ArgBounds;
 
     lazy_static! {
         static ref VEC: Vec<i32> = vec![87, 26, 79, 82, 92];
@@ -27,21 +50,21 @@ mod tests {
 
     #[test]
     fn test_arg_max() {
-        assert_eq!(arg_max(&VEC), 4)
+        assert_eq!(VEC.arg_max(), 4)
     }
 
     #[test]
     fn test_float_arg_max() {
-        assert_eq!(arg_max(&FLOAT_VEC), 2)
+        assert_eq!(FLOAT_VEC.arg_max(), 2)
     }
 
     #[test]
     fn test_arg_min() {
-        assert_eq!(arg_min(&VEC), 1)
+        assert_eq!(VEC.arg_min(), 1)
     }
 
     #[test]
     fn test_float_arg_min() {
-        assert_eq!(arg_min(&FLOAT_VEC), 0)
+        assert_eq!(FLOAT_VEC.arg_min(), 0)
     }
 }
