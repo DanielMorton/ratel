@@ -1,19 +1,18 @@
+use rand::Rng;
 use rand::thread_rng;
-use rand_distr::{Distribution, Normal};
+use rand_distr::Normal;
 
 use super::ArgBounds;
 use super::Bandit;
+use super::Distributions;
 
-struct GaussianBandit {
+struct GaussianBandit<R: Rng> {
     means: Vec<f64>,
-    stddevs: Vec<f64>,
+    std: Vec<f64>,
+    distributions: Distributions<Normal<f64>, R>,
 }
 
-impl Bandit for GaussianBandit {
-    fn arms(&self) -> usize {
-        self.means.len()
-    }
-
+impl<R: Rng> Bandit for GaussianBandit<R> {
     fn best_arm(&self) -> usize {
         self.means.arg_max()
     }
@@ -22,9 +21,7 @@ impl Bandit for GaussianBandit {
         self.means.val_max()
     }
 
-    fn reward(&self, arm: usize) -> f64 {
-        Normal::new(self.means[arm], self.stddevs[arm])
-            .unwrap()
-            .sample(&mut thread_rng())
+    fn reward(&mut self, arm: usize) -> f64 {
+        self.distributions.reward(arm)
     }
 }
