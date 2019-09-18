@@ -6,7 +6,7 @@ use crate::bandit::bandit::Bandit;
 
 use super::ArgBounds;
 
-struct BinomialBandit {
+struct BinomialBandit<> {
     nums: Vec<i32>,
     probs: Vec<f64>,
     distributions: Vec<Binomial>,
@@ -31,13 +31,13 @@ impl BinomialBandit {
     }
 }
 
-impl Bandit for BinomialBandit {
+impl Bandit<u64> for BinomialBandit {
     fn means(&self) -> Vec<f64> {
         self.nums.iter().zip(&self.probs).map(|(n, p)| (*n as f64) * *p).collect()
     }
 
-    fn reward(&self, arm: usize) -> f64 {
-        self.distributions[arm].sample(&mut thread_rng()) as f64
+    fn reward(&self, arm: usize) -> u64 {
+        self.distributions[arm].sample(&mut thread_rng())
     }
 
     fn stds(&self) -> Vec<f64> {

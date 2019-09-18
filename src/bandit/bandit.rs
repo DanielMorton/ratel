@@ -1,6 +1,6 @@
 use super::ArgBounds;
 
-pub(super) trait Bandit {
+pub(super) trait Bandit<T> {
     fn arms(&self) -> usize {
         self.means().len()
     }
@@ -19,7 +19,7 @@ pub(super) trait Bandit {
 
     fn means(&self) -> Vec<f64>;
 
-    fn reward(&self, arm: usize) -> f64;
+    fn reward(&self, arm: usize) -> T;
 
     fn std(&self, arm: usize) -> f64 {
         self.stds()[arm]

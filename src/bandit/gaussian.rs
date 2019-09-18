@@ -28,7 +28,7 @@ impl GaussianBandit {
     }
 }
 
-impl Bandit for GaussianBandit {
+impl Bandit<f64> for GaussianBandit {
     fn means(&self) -> Vec<f64> { self.means.clone() }
 
     fn reward(&self, arm: usize) -> f64 {
