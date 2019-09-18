@@ -2,9 +2,7 @@ use rand::distributions::Distribution;
 use rand::thread_rng;
 use rand_distr::Binomial;
 
-use crate::bandit::bandit::Bandit;
-
-use super::ArgBounds;
+use super::{ArgBounds, Bandit};
 
 struct BinomialBandit {
     nums: Vec<i32>,

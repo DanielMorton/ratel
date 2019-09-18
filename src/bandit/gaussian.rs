@@ -2,8 +2,7 @@ use rand::distributions::Distribution;
 use rand::thread_rng;
 use rand_distr::Normal;
 
-use super::ArgBounds;
-use super::Bandit;
+use super::{ArgBounds, Bandit};
 
 struct GaussianBandit {
     means: Vec<f64>,
