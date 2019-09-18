@@ -29,29 +29,13 @@ impl GaussianBandit {
 }
 
 impl Bandit for GaussianBandit {
-    fn arms(&self) -> usize {
-        self.means.len()
-    }
-
-    fn best_arm(&self) -> usize {
-        self.means.arg_max()
-    }
-
-    fn max_reward(&self) -> f64 {
-        self.means.val_max()
-    }
-
-    fn mean(&self, arm: usize) -> f64 {
-        self.means[arm]
-    }
+    fn means(&self) -> Vec<f64> { self.means.clone() }
 
     fn reward(&self, arm: usize) -> f64 {
         self.distributions[arm].sample(&mut thread_rng())
     }
 
-    fn std(&self, arm: usize) -> f64 {
-        self.stds[arm]
-    }
+    fn stds(&self) -> Vec<f64> { self.stds.clone() }
 }
 
 #[cfg(test)]

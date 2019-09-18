@@ -1,13 +1,29 @@
+use super::ArgBounds;
+
 pub(super) trait Bandit {
-    fn arms(&self) -> usize;
+    fn arms(&self) -> usize {
+        self.means().len()
+    }
 
-    fn best_arm(&self) -> usize;
+    fn best_arm(&self) -> usize {
+        self.means().arg_max()
+    }
 
-    fn max_reward(&self) -> f64;
+    fn max_reward(&self) -> f64 {
+        self.means().val_max()
+    }
 
-    fn mean(&self, arm: usize) -> f64;
+    fn mean(&self, arm: usize) -> f64 {
+        self.means()[arm]
+    }
+
+    fn means(&self) -> Vec<f64>;
 
     fn reward(&self, arm: usize) -> f64;
 
-    fn std(&self, arm: usize) -> f64;
+    fn std(&self, arm: usize) -> f64 {
+        self.stds()[arm]
+    }
+
+    fn stds(&self) -> Vec<f64>;
 }
