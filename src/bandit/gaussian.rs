@@ -5,8 +5,6 @@ use rand_distr::Normal;
 use super::ArgBounds;
 use super::Bandit;
 
-//use super::Distributions;
-
 struct GaussianBandit {
     means: Vec<f64>,
     stds: Vec<f64>,
@@ -43,7 +41,73 @@ impl Bandit for GaussianBandit {
         self.means.val_max()
     }
 
-    fn reward(&mut self, arm: usize) -> f64 {
+    fn mean(&self, arm: usize) -> f64 {
+        self.means[arm]
+    }
+
+    fn reward(&self, arm: usize) -> f64 {
         self.distributions[arm].sample(&mut thread_rng())
+    }
+
+    fn std(&self, arm: usize) -> f64 {
+        self.stds[arm]
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::GaussianBandit;
+    use super::super::Bandit;
+
+    lazy_static! {
+        static ref MEAN_VEC: Vec<f64> = vec![-1.83, -0.82, -1.35, 2.61, 0.39];
+        static ref STD_VEC: Vec<f64> = vec![2.3, 1.25, 0.78, 1.80, 1.55];
+        static ref GAUSS: GaussianBandit = GaussianBandit::new(MEAN_VEC.to_vec(), STD_VEC.to_vec());
+    }
+
+    #[test]
+    fn test_arms() {
+        assert_eq!(GAUSS.arms(), 5)
+    }
+
+    #[test]
+    fn test_best_arm() {
+        assert_eq!(GAUSS.best_arm(), 3)
+    }
+
+    #[test]
+    fn test_max_reward() {
+        assert_eq!(GAUSS.max_reward(), 2.61)
+    }
+
+    #[test]
+    fn test_mean() {
+        assert_eq!(GAUSS.mean(1), -0.82)
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_new_wrong_size() {
+        let s = vec![2.3, 1.25, 0.78, 1.80];
+        GaussianBandit::new(MEAN_VEC.to_vec(), s);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_new_neg_sd() {
+        let s = vec![2.3, 1.25, 0.78, 1.80, -1.55];
+        GaussianBandit::new(MEAN_VEC.to_vec(), s);
+    }
+
+    #[test]
+    fn test_reward() {
+        for _ in 0..1000 {
+            GAUSS.reward(2);
+        }
+    }
+
+    #[test]
+    fn test_std() {
+        assert_eq!(GAUSS.std(1), 1.25)
     }
 }
