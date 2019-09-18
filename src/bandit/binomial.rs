@@ -45,3 +45,77 @@ impl Bandit for BinomialBandit {
             .map(|s| s.sqrt()).collect()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use assert_approx_eq::assert_approx_eq;
+
+    use super::BinomialBandit;
+    use super::super::Bandit;
+
+    lazy_static! {
+        static ref NUMS_VEC: Vec<i32> = vec![5, 4, 1, 8, 10];
+        static ref PROBS_VEC: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
+        static ref BINOM: BinomialBandit = BinomialBandit::new(NUMS_VEC.to_vec(), PROBS_VEC.to_vec());
+    }
+
+    #[test]
+    fn test_arms() {
+        assert_eq!(BINOM.arms(), 5)
+    }
+
+    #[test]
+    fn test_best_arm() {
+        assert_eq!(BINOM.best_arm(), 4)
+    }
+
+    #[test]
+    fn test_max_reward() {
+        assert_approx_eq!(BINOM.max_reward(), 5.7)
+    }
+
+    #[test]
+    fn test_mean() {
+        assert_eq!(BINOM.mean(1), 3.64)
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_new_big_prob() {
+        let p = vec![0.97, 0.91, 0.77, 0.66, 1.05];
+        BinomialBandit::new(NUMS_VEC.to_vec(), p);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_new_neg_num() {
+        let n = vec![5, 4, 1, -8, 10];
+        BinomialBandit::new(n, PROBS_VEC.to_vec());
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_new_neg_prob() {
+        let p = vec![0.97, 0.91, 0.77, 0.66, -0.05];
+        BinomialBandit::new(NUMS_VEC.to_vec(), p);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_new_wrong_size() {
+        let p = vec![0.97, 0.91, 0.77, 0.66];
+        BinomialBandit::new(NUMS_VEC.to_vec(), p);
+    }
+
+    #[test]
+    fn test_reward() {
+        for _ in 0..1000 {
+            BINOM.reward(2);
+        }
+    }
+
+    #[test]
+    fn test_std() {
+        assert_approx_eq!(BINOM.std(1), 0.5723635)
+    }
+}
