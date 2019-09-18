@@ -29,13 +29,17 @@ impl GaussianBandit {
 }
 
 impl Bandit<f64> for GaussianBandit {
-    fn means(&self) -> Vec<f64> { self.means.clone() }
+    fn means(&self) -> Vec<f64> {
+        self.means.clone()
+    }
 
     fn reward(&self, arm: usize) -> f64 {
         self.distributions[arm].sample(&mut thread_rng())
     }
 
-    fn stds(&self) -> Vec<f64> { self.stds.clone() }
+    fn stds(&self) -> Vec<f64> {
+        self.stds.clone()
+    }
 }
 
 #[cfg(test)]

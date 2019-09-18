@@ -6,7 +6,7 @@ use crate::bandit::bandit::Bandit;
 
 use super::ArgBounds;
 
-struct BinomialBandit<> {
+struct BinomialBandit {
     nums: Vec<i32>,
     probs: Vec<f64>,
     distributions: Vec<Binomial>,
@@ -33,7 +33,11 @@ impl BinomialBandit {
 
 impl Bandit<u64> for BinomialBandit {
     fn means(&self) -> Vec<f64> {
-        self.nums.iter().zip(&self.probs).map(|(n, p)| (*n as f64) * *p).collect()
+        self.nums
+            .iter()
+            .zip(&self.probs)
+            .map(|(n, p)| (*n as f64) * *p)
+            .collect()
     }
 
     fn reward(&self, arm: usize) -> u64 {
@@ -41,8 +45,12 @@ impl Bandit<u64> for BinomialBandit {
     }
 
     fn stds(&self) -> Vec<f64> {
-        self.nums.iter().zip(&self.probs).map(|(n, p)| (*n as f64) * *p * (1.0 - *p))
-            .map(|s| s.sqrt()).collect()
+        self.nums
+            .iter()
+            .zip(&self.probs)
+            .map(|(n, p)| (*n as f64) * *p * (1.0 - *p))
+            .map(|s| s.sqrt())
+            .collect()
     }
 }
 
@@ -56,7 +64,8 @@ mod tests {
     lazy_static! {
         static ref NUMS_VEC: Vec<i32> = vec![5, 4, 1, 8, 10];
         static ref PROBS_VEC: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        static ref BINOM: BinomialBandit = BinomialBandit::new(NUMS_VEC.to_vec(), PROBS_VEC.to_vec());
+        static ref BINOM: BinomialBandit =
+            BinomialBandit::new(NUMS_VEC.to_vec(), PROBS_VEC.to_vec());
     }
 
     #[test]
@@ -81,7 +90,10 @@ mod tests {
 
     #[test]
     fn test_means() {
-        BINOM.means().iter().zip(vec![4.85, 3.64, 0.77, 5.28, 5.7])
+        BINOM
+            .means()
+            .iter()
+            .zip(vec![4.85, 3.64, 0.77, 5.28, 5.7])
             .for_each(|(m1, m2)| assert_approx_eq!(m1, m2))
     }
 
@@ -127,7 +139,12 @@ mod tests {
 
     #[test]
     fn test_stds() {
-        BINOM.stds().iter().zip(vec![0.38144462, 0.57236352, 0.42083251, 1.33985074, 1.56556699])
+        BINOM
+            .stds()
+            .iter()
+            .zip(vec![
+                0.38144462, 0.57236352, 0.42083251, 1.33985074, 1.56556699,
+            ])
             .for_each(|(s1, s2)| assert_approx_eq!(s1, s2))
     }
 }
