@@ -1,4 +1,6 @@
 pub(super) trait Bandit {
+    fn arms(&self) -> usize;
+
     fn best_arm(&self) -> usize;
 
     fn max_reward(&self) -> f64;
