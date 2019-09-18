@@ -80,6 +80,12 @@ mod tests {
     }
 
     #[test]
+    fn test_means() {
+        BINOM.means().iter().zip(vec![4.85, 3.64, 0.77, 5.28, 5.7])
+            .for_each(|(m1, m2)| assert_approx_eq!(m1, m2))
+    }
+
+    #[test]
     #[should_panic]
     fn test_new_big_prob() {
         let p = vec![0.97, 0.91, 0.77, 0.66, 1.05];
@@ -117,5 +123,11 @@ mod tests {
     #[test]
     fn test_std() {
         assert_approx_eq!(BINOM.std(1), 0.5723635)
+    }
+
+    #[test]
+    fn test_stds() {
+        BINOM.stds().iter().zip(vec![0.38144462, 0.57236352, 0.42083251, 1.33985074, 1.56556699])
+            .for_each(|(s1, s2)| assert_approx_eq!(s1, s2))
     }
 }

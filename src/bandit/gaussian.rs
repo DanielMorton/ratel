@@ -70,6 +70,11 @@ mod tests {
     }
 
     #[test]
+    fn test_means() {
+        assert_eq!(GAUSS.means(), vec![-1.83, -0.82, -1.35, 2.61, 0.39])
+    }
+
+    #[test]
     #[should_panic]
     fn test_new_wrong_size() {
         let s = vec![2.3, 1.25, 0.78, 1.80];
@@ -93,5 +98,10 @@ mod tests {
     #[test]
     fn test_std() {
         assert_eq!(GAUSS.std(1), 1.25)
+    }
+
+    #[test]
+    fn test_stds() {
+        assert_eq!(GAUSS.stds(), vec![2.3, 1.25, 0.78, 1.80, 1.55])
     }
 }
