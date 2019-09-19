@@ -1,5 +1,4 @@
 use std::cmp::PartialOrd;
-use std::ops::Deref;
 
 pub trait ArgBounds<N: PartialOrd> {
     fn arg_max(&self) -> usize;

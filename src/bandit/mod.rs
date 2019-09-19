@@ -1,4 +1,4 @@
-use bandit::Bandit;
+pub(super) use bandit::Bandit;
 
 use super::util::ArgBounds;
 
