@@ -5,7 +5,7 @@ pub(in super::super) trait Stepper {
 }
 
 struct ConstantStepper {
-    step_size: f64
+    step_size: f64,
 }
 
 impl ConstantStepper {
@@ -31,7 +31,10 @@ struct HarmonicStepper {
 impl HarmonicStepper {
     fn new(step_size: u32) -> HarmonicStepper {
         assert!(step_size > 0);
-        HarmonicStepper { warm_up: step_size, step_size }
+        HarmonicStepper {
+            warm_up: step_size,
+            step_size,
+        }
     }
 }
 
