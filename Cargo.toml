@@ -9,5 +9,6 @@ edition = "2018"
 [dependencies]
 assert_approx_eq = "*"
 lazy_static = "*"
+num-traits = "*"
 rand = "*"
 rand_distr = "*"

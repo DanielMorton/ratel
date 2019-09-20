@@ -1,6 +1,10 @@
+use crate::util::Stepper;
+
 use super::Bandit;
 
 pub(super) trait Agent<T> {
+    fn action(&self) -> usize;
+
     fn arms(&self) -> usize {
         self.bandit().arms()
     }
@@ -21,5 +25,9 @@ pub(super) trait Agent<T> {
         self.bandit().reward(action)
     }
 
-    fn step(&self) -> f64;
+    fn step(&mut self, action: usize) -> f64 {
+        self.stepper(action).step()
+    }
+
+    fn stepper(&self, action: usize) -> &mut Stepper;
 }
