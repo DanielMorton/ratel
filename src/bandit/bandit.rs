@@ -1,6 +1,6 @@
 use super::ArgBounds;
 
-pub(in super::super) trait Bandit<T> {
+pub(super) trait Bandit<T> {
     fn arms(&self) -> usize {
         self.means().len()
     }
