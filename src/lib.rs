@@ -1,6 +1,8 @@
 #[macro_use]
 extern crate lazy_static;
 
+use util::Stepper as Stepper;
+
 mod agent;
 mod bandit;
 mod util;

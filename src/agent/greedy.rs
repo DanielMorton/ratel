@@ -1,6 +1,6 @@
 use num_traits::ToPrimitive;
 
-use crate::util::Stepper;
+use crate::Stepper;
 
 use super::{Agent, ArgBounds};
 
@@ -14,12 +14,8 @@ impl<'a, T: ToPrimitive> Agent<T> for GreedyAgent<'a> {
         self.q_star.arg_max()
     }
 
-    fn arms(&self) -> usize {
-        self.q_star.len()
-    }
-
-    fn current_estimate(&self, arm: usize) -> f64 {
-        self.q_star[arm]
+    fn q_star(&self) -> &Vec<f64> {
+        &self.q_star
     }
 
     fn step(&mut self, arm: usize, reward: T) -> () {
