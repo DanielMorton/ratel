@@ -35,6 +35,8 @@ impl<'a, T: ToPrimitive> Agent<T> for EpsilonGreedyAgent<'a> {
 
 impl<'a> EpsilonGreedyAgent<'a> {
     fn new(q_init: Vec<f64>, stepper: &mut dyn Stepper, epsilon: f64) -> EpsilonGreedyAgent {
+        assert!(epsilon > 0.0);
+        assert!(epsilon < 1.0);
         let l = q_init.len();
         EpsilonGreedyAgent {
             q_star: q_init,
