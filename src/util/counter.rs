@@ -12,7 +12,7 @@ pub(in super::super) trait Counter<T> {
 }
 
 struct AggregateCounter {
-    counter: u32
+    counter: u32,
 }
 
 impl AggregateCounter {
@@ -49,9 +49,11 @@ impl<T: Num + AddAssign + Copy + Sum> AverageCounter<T> {
         self.total() / vec![T::one(); self.counter as usize].iter().copied().sum()
     }
 
-
     fn new() -> AverageCounter<T> {
-        AverageCounter { total: T::zero(), counter: 0 }
+        AverageCounter {
+            total: T::zero(),
+            counter: 0,
+        }
     }
 
     fn total(&self) -> T {

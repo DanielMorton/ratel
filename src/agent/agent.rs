@@ -1,4 +1,3 @@
-
 pub(super) trait Agent<T> {
     fn action(&self) -> usize;
 

@@ -88,5 +88,4 @@ mod tests {
     fn test_float_val_min() {
         assert_eq!(FLOAT_VEC.val_min(), 0.51)
     }
-
 }

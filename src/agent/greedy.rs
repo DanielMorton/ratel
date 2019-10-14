@@ -25,6 +25,9 @@ impl<'a, T: ToPrimitive> Agent<T> for GreedyAgent<'a> {
 
 impl<'a> GreedyAgent<'a> {
     fn new(q_init: Vec<f64>, stepper: &mut dyn Stepper) -> GreedyAgent {
-        GreedyAgent { q_star: q_init, stepper }
+        GreedyAgent {
+            q_star: q_init,
+            stepper,
+        }
     }
 }
