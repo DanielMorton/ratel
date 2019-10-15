@@ -37,11 +37,11 @@ impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
         self.wins.reset();
     }
 
-    fn rewards(&self) -> &RecordCounter<T> {
-        &self.rewards
+    fn rewards(&self) -> &Vec<T> {
+        self.rewards.record()
     }
 
-    fn wins(&self) -> &RecordCounter<u32> {
-        &self.wins
+    fn wins(&self) -> &Vec<u32> {
+        self.wins.record()
     }
 }
