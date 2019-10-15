@@ -31,3 +31,26 @@ impl<T: Num + AddAssign> Counter<T> for BaseCounter<T> {
         self.counter += n
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::BaseCounter;
+    use super::super::Counter;
+
+    #[test]
+    fn test_base_counter() {
+        let mut bc: BaseCounter<u32> = BaseCounter::new();
+        for _ in 1..=6 {
+            bc.increment()
+        }
+        assert_eq!(*bc.counter(), 6);
+        bc.reset();
+        assert_eq!(*bc.counter(), 0);
+        for i in 1..=6 {
+            bc.update(i)
+        }
+        assert_eq!(*bc.counter(), 21);
+        bc.reset();
+        assert_eq!(*bc.counter(), 0)
+    }
+}

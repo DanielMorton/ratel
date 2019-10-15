@@ -11,5 +11,7 @@ pub trait Agent<T> {
 
     fn q_star(&self) -> &Vec<f64>;
 
+    fn reset(&mut self, q_init: Vec<f64>) -> ();
+
     fn step(&mut self, arm: usize, reward: T) -> ();
 }

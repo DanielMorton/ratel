@@ -18,6 +18,11 @@ impl<'a, T: ToPrimitive> Agent<T> for GreedyAgent<'a> {
         &self.q_star
     }
 
+    fn reset(&mut self, q_init: Vec<f64>) {
+        self.q_star = q_init;
+        self.stepper.reset()
+    }
+
     fn step(&mut self, arm: usize, reward: T) -> () {
         self.q_star[arm] += self.stepper.step(arm) * (reward.to_f64().unwrap() - self.q_star[arm])
     }

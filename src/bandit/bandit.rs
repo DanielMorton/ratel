@@ -19,7 +19,7 @@ pub trait Bandit<T> {
 
     fn means(&self) -> Vec<f64>;
 
-    fn reward(&self, arm: &usize) -> T;
+    fn reward(&self, arm: usize) -> T;
 
     fn std(&self, arm: usize) -> f64 {
         self.stds()[arm]

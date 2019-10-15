@@ -41,3 +41,28 @@ impl<T: AddAssign + Num + ToPrimitive> Counter<T> for AggregateCounter<T> {
         self.counter += T::one()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::AggregateCounter;
+    use super::super::Counter;
+
+    #[test]
+    fn test_aggregate_counter() {
+        let mut ac: AggregateCounter<u32> = AggregateCounter::new();
+        for i in 1..=6 {
+            ac.update(i)
+        }
+        assert_eq!(*ac.counter(), 6);
+        assert_eq!(*ac.total(), 21);
+        assert_eq!(ac.average(), 3.5);
+        ac.reset();
+        assert_eq!(*ac.counter(), 0);
+        for _ in 1..=7 {
+            ac.update(3)
+        }
+        assert_eq!(*ac.counter(), 7);
+        assert_eq!(*ac.total(), 21);
+        assert_eq!(ac.average(), 3.0);
+    }
+}
