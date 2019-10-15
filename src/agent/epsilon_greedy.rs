@@ -7,7 +7,7 @@ use crate::Stepper;
 
 use super::{Agent, ArgBounds};
 
-struct EpsilonGreedyAgent<'a> {
+pub struct EpsilonGreedyAgent<'a> {
     q_star: Vec<f64>,
     stepper: &'a mut dyn Stepper,
     epsilon: f64,

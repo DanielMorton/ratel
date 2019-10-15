@@ -1,10 +1,10 @@
 #[macro_use]
 extern crate lazy_static;
 
-use agent::Agent;
-use bandit::Bandit;
-pub use util::{Counter, RecordCounter};
-use util::Stepper;
+pub use agent::{Agent, EpsilonGreedyAgent, GreedyAgent};
+pub use bandit::{Bandit, BinomialBandit, GaussianBandit};
+pub use game::Game;
+pub use util::{Counter, HarmonicStepper, RecordCounter, Stepper};
 
 mod agent;
 mod bandit;

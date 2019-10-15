@@ -4,7 +4,7 @@ use rand_distr::Normal;
 
 use super::{ArgBounds, Bandit};
 
-struct GaussianBandit {
+pub struct GaussianBandit {
     means: Vec<f64>,
     stds: Vec<f64>,
     distributions: Vec<Normal<f64>>,

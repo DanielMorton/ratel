@@ -4,7 +4,7 @@ use crate::Stepper;
 
 use super::{Agent, ArgBounds};
 
-struct GreedyAgent<'a> {
+pub struct GreedyAgent<'a> {
     q_star: Vec<f64>,
     stepper: &'a mut dyn Stepper,
 }
@@ -29,7 +29,7 @@ impl<'a, T: ToPrimitive> Agent<T> for GreedyAgent<'a> {
 }
 
 impl<'a> GreedyAgent<'a> {
-    fn new(q_init: Vec<f64>, stepper: &mut dyn Stepper) -> GreedyAgent {
+    pub fn new(q_init: Vec<f64>, stepper: &mut dyn Stepper) -> GreedyAgent {
         GreedyAgent {
             q_star: q_init,
             stepper,

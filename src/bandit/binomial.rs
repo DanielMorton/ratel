@@ -4,14 +4,14 @@ use rand_distr::Binomial;
 
 use super::{ArgBounds, Bandit};
 
-struct BinomialBandit {
+pub struct BinomialBandit {
     nums: Vec<i32>,
     probs: Vec<f64>,
     distributions: Vec<Binomial>,
 }
 
 impl BinomialBandit {
-    fn new(nums: Vec<i32>, probs: Vec<f64>) -> BinomialBandit {
+    pub fn new(nums: Vec<i32>, probs: Vec<f64>) -> BinomialBandit {
         assert_eq!(nums.len(), probs.len());
         assert!(probs.val_max() <= 1.0);
         assert!(probs.val_min() >= 0.0);
