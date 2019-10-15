@@ -4,13 +4,13 @@ use num_traits::{Num, ToPrimitive};
 
 use super::Counter;
 
-struct RecordCounter<T: ToPrimitive> {
+pub struct RecordCounter<T: ToPrimitive> {
     record: Vec<T>,
     counter: T,
 }
 
 impl<T: Num + ToPrimitive> RecordCounter<T> {
-    fn new() -> RecordCounter<T> {
+    pub fn new() -> RecordCounter<T> {
         RecordCounter {
             record: Vec::new(),
             counter: T::zero(),

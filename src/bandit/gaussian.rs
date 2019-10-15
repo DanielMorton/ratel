@@ -32,8 +32,8 @@ impl Bandit<f64> for GaussianBandit {
         self.means.clone()
     }
 
-    fn reward(&self, arm: usize) -> f64 {
-        self.distributions[arm].sample(&mut thread_rng())
+    fn reward(&self, arm: &usize) -> f64 {
+        self.distributions[*arm].sample(&mut thread_rng())
     }
 
     fn stds(&self) -> Vec<f64> {

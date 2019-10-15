@@ -38,8 +38,8 @@ impl Bandit<u64> for BinomialBandit {
             .collect()
     }
 
-    fn reward(&self, arm: usize) -> u64 {
-        self.distributions[arm].sample(&mut thread_rng())
+    fn reward(&self, arm: &usize) -> u64 {
+        self.distributions[*arm].sample(&mut thread_rng())
     }
 
     fn stds(&self) -> Vec<f64> {

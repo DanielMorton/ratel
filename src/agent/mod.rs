@@ -1,4 +1,4 @@
-use agent::Agent;
+pub use agent::Agent;
 
 use super::util::ArgBounds;
 

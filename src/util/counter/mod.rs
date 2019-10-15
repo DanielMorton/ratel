@@ -1,4 +1,5 @@
-use counter::Counter;
+pub use counter::Counter;
+pub use record_counter::RecordCounter;
 
 mod aggregate_counter;
 mod base_counter;

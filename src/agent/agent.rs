@@ -1,4 +1,4 @@
-pub(super) trait Agent<T> {
+pub trait Agent<T> {
     fn action(&self) -> usize;
 
     fn arms(&self) -> usize {
