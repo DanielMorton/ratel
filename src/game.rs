@@ -31,7 +31,7 @@ impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
         self.agent.step(current_action, reward);
     }
 
-    fn reset(&mut self, q_init: Vec<f64>) -> () {
+    pub fn reset(&mut self, q_init: Vec<f64>) -> () {
         self.agent.reset(q_init);
         self.rewards.reset();
         self.wins.reset();
