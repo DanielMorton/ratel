@@ -37,7 +37,7 @@ impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
         self.wins.reset();
     }
 
-    fn rewards(&self) -> &Vec<T> {
+    pub fn rewards(&self) -> &Vec<T> {
         self.rewards.record()
     }
 
@@ -47,7 +47,7 @@ impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
         }
     }
 
-    fn wins(&self) -> &Vec<u32> {
+    pub fn wins(&self) -> &Vec<u32> {
         self.wins.record()
     }
 }

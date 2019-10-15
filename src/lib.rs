@@ -1,4 +1,3 @@
-#[macro_use]
 extern crate lazy_static;
 
 pub use agent::{Agent, EpsilonGreedyAgent, GreedyAgent};
