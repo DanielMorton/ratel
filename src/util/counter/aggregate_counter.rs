@@ -26,7 +26,7 @@ impl<T: Num + ToPrimitive> AggregateCounter<T> {
     }
 }
 
-impl<T: Num + ToPrimitive + AddAssign> Counter<T> for AggregateCounter<T> {
+impl<T: AddAssign + Num + ToPrimitive> Counter<T> for AggregateCounter<T> {
     fn counter(&self) -> &T {
         &self.counter
     }
