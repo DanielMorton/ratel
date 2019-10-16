@@ -8,7 +8,7 @@ use rand_distr::uniform::Uniform;
 use super::{BinomialBandit, EpsilonGreedyAgent, Game, HarmonicStepper};
 
 pub fn epsilon_bernoulli(runs: u32, iterations: u32, agent_start: f64, epsilon: f64) {
-    let rewards = vec![0.1, 0.11, 0.95, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19];
+    let rewards = vec![0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19];
 
     let mut stepper = HarmonicStepper::new(1, rewards.len());
     let rand_start = Uniform::new(agent_start - 1e-7, agent_start + 1e-7);
@@ -54,6 +54,7 @@ pub fn epsilon_bernoulli(runs: u32, iterations: u32, agent_start: f64, epsilon: 
         .zip(reward_out.into_iter())
         .map(|x| format!("{}, {}", x.0, x.1))
         .fold(String::from("wins,rewards"), |s, x| [s, x].join("\n"));
-    let mut file = File::create(format!("epsilon/epsilon__{}_{}.csv", epsilon, agent_start)).unwrap();
+    let mut file =
+        File::create(format!("epsilon/epsilon_{}_{}.csv", epsilon, agent_start)).unwrap();
     file.write_all(greedy.as_bytes()).unwrap();
 }

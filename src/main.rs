@@ -14,7 +14,7 @@ fn main() {
     let start = Instant::now();
     pool.scoped(|scope| {
         for x in vec {
-            scope.execute(move || epsilon_bernoulli(r, n, f64::from(x) / 100.0, 0.1))
+            scope.execute(move || epsilon_bernoulli(r, n, f64::from(x) / 100.0, 0.01))
         }
     });
     println!("{}", start.elapsed().as_secs());
