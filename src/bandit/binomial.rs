@@ -60,7 +60,7 @@ mod tests {
     use super::super::Bandit;
 
     lazy_static! {
-        static ref NUMS_VEC: Vec<i32> = vec![5, 4, 1, 8, 10];
+        static ref NUMS_VEC: Vec<u32> = vec![5, 4, 1, 8, 10];
         static ref PROBS_VEC: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
         static ref BINOM: BinomialBandit =
             BinomialBandit::new(NUMS_VEC.to_vec(), PROBS_VEC.to_vec());
@@ -100,13 +100,6 @@ mod tests {
     fn test_new_big_prob() {
         let p = vec![0.97, 0.91, 0.77, 0.66, 1.05];
         BinomialBandit::new(NUMS_VEC.to_vec(), p);
-    }
-
-    #[test]
-    #[should_panic]
-    fn test_new_neg_num() {
-        let n = vec![5, 4, 1, -8, 10];
-        BinomialBandit::new(n, PROBS_VEC.to_vec());
     }
 
     #[test]
