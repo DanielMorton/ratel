@@ -5,13 +5,13 @@ use rand_distr::Binomial;
 use super::{ArgBounds, Bandit};
 
 pub struct BinomialBandit {
-    nums: Vec<i32>,
+    nums: Vec<u32>,
     probs: Vec<f64>,
     distributions: Vec<Binomial>,
 }
 
 impl BinomialBandit {
-    pub fn new(nums: Vec<i32>, probs: Vec<f64>) -> BinomialBandit {
+    pub fn new(nums: Vec<u32>, probs: Vec<f64>) -> BinomialBandit {
         assert_eq!(nums.len(), probs.len());
         assert!(probs.val_max() <= 1.0);
         assert!(probs.val_min() >= 0.0);
@@ -19,7 +19,7 @@ impl BinomialBandit {
         let dist = nums
             .iter()
             .zip(&probs)
-            .map(|(n, p)| Binomial::new(*n as u64, *p).unwrap())
+            .map(|(n, p)| Binomial::new(u64::from(*n), *p).unwrap())
             .collect();
         BinomialBandit {
             nums,
@@ -29,7 +29,7 @@ impl BinomialBandit {
     }
 }
 
-impl Bandit<u64> for BinomialBandit {
+impl Bandit<u32> for BinomialBandit {
     fn means(&self) -> Vec<f64> {
         self.nums
             .iter()
@@ -38,8 +38,8 @@ impl Bandit<u64> for BinomialBandit {
             .collect()
     }
 
-    fn reward(&self, arm: usize) -> u64 {
-        self.distributions[arm].sample(&mut thread_rng())
+    fn reward(&self, arm: usize) -> u32 {
+        self.distributions[arm].sample(&mut thread_rng()) as u32
     }
 
     fn stds(&self) -> Vec<f64> {
