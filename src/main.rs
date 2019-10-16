@@ -1,9 +1,10 @@
 extern crate scoped_threadpool;
 
-use ratel::{epsilon_bernoulli, greedy_bernoulli};
 use std::time::Instant;
 
 use scoped_threadpool::Pool;
+
+use ratel::{epsilon_bernoulli, greedy_bernoulli};
 
 fn main() {
     let n = 10000u32;

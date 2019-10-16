@@ -54,7 +54,6 @@ pub fn epsilon_bernoulli(runs: u32, iterations: u32, agent_start: f64, epsilon: 
         .zip(reward_out.into_iter())
         .map(|x| format!("{}, {}", x.0, x.1))
         .fold(String::from("wins,rewards"), |s, x| [s, x].join("\n"));
-    let mut file =
-        File::create(format!("epsilon/epsilon__{}_{}.csv", epsilon, agent_start)).unwrap();
+    let mut file = File::create(format!("epsilon/epsilon__{}_{}.csv", epsilon, agent_start)).unwrap();
     file.write_all(greedy.as_bytes()).unwrap();
 }
