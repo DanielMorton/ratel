@@ -2,13 +2,19 @@ use std::fs::File;
 use std::io::Write;
 use std::time::Instant;
 
+use rand::distributions::Distribution;
+use rand::thread_rng;
+use rand_distr::uniform::Uniform;
+
 use ratel::{Agent, BinomialBandit, Game, GreedyAgent, HarmonicStepper};
 
 fn main() {
-    let rewards = vec![0.1, 0.11, 0.95, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19];
+    let rewards = vec![0.1, 0.11, 0.95, 0.94, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19];
 
     let mut stepper = HarmonicStepper::new(1, rewards.len());
-    let mut agent: GreedyAgent = GreedyAgent::new(vec![1.0; rewards.len()], &mut stepper);
+    let rand_start = Uniform::new(1.0 - 1e-7, 1.0);
+    let q_start = (1..=rewards.len()).into_iter().map(|_| rand_start.sample(&mut thread_rng())).collect();
+    let mut agent: GreedyAgent = GreedyAgent::new(q_start, &mut stepper);
     let bandit = BinomialBandit::new(vec![1; rewards.len()], rewards.clone());
     let mut game = Game::new(&mut agent, &bandit);
     let n = 100u32;
@@ -23,7 +29,8 @@ fn main() {
             .map(|w| w.0 + f64::from(*w.1)).collect();
         reward_out = reward_out.into_iter().zip(game.rewards().into_iter())
             .map(|ro| ro.0 + f64::from(*ro.1)).collect();
-        game.reset(vec![0.5; rewards.len()])
+        game.reset((1..=rewards.len()).into_iter()
+            .map(|_| rand_start.sample(&mut thread_rng())).collect())
     }
     wins = wins.into_iter().map(|w| w / f64::from(r)).collect();
     reward_out = reward_out.into_iter().map(|ro| ro / f64::from(r)).collect();
