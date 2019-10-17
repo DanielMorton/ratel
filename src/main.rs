@@ -3,7 +3,7 @@ use std::time::Instant;
 use clap::{App, Arg, value_t};
 use scoped_threadpool::Pool;
 
-use ratel::{epsilon_bernoulli, greedy_bernoulli};
+use ratel::{epsilon_bernoulli, sequential_bernoulli};
 
 fn main() {
     let matches = App::new("Ratel")
@@ -60,12 +60,12 @@ fn run_epsilon(runs: u32, iterations: u32, epsilon: f64) {
 }
 
 fn run_greedy(runs: u32, iterations: u32) {
-    let mut pool = Pool::new(12);
-    let vec: Vec<u32> = (1..=100).into_iter().map(|x| x).collect();
+    let mut pool = Pool::new(100);
+    let int_vec: Vec<u32> = (1..=100).into_iter().map(|x| x).collect();
     let start = Instant::now();
     pool.scoped(|scope| {
-        for x in vec {
-            scope.execute(move || greedy_bernoulli(runs, iterations, f64::from(x) / 100.0));
+        for x in int_vec {
+            scope.execute(move || sequential_bernoulli(runs, iterations, f64::from(x) / 100.0));
         }
     });
     println!("{}", start.elapsed().as_secs());

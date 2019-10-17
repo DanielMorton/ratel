@@ -1,0 +1,8 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/rust:1.38
+    steps:
+      - cargo test --all --verbose
+      - cargo build
