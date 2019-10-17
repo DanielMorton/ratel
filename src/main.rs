@@ -1,6 +1,6 @@
 use std::time::Instant;
 
-use clap::{App, Arg, SubCommand, value_t};
+use clap::{App, Arg, value_t};
 use scoped_threadpool::Pool;
 
 use ratel::{epsilon_bernoulli, greedy_bernoulli};
@@ -10,8 +10,8 @@ fn main() {
         .arg(
             Arg::with_name("runs")
                 .short("r")
-                .long("runs")
                 .help("Number of trial runs.")
+                .required(true)
                 .takes_value(true),
         )
         .arg(
@@ -30,7 +30,6 @@ fn main() {
         .arg(
             Arg::with_name("epsilon_greedy")
                 .short("e")
-                .long("epsilon")
                 .help("Use the epsilon-greedy algorithm")
                 .takes_value(true)
                 .conflicts_with("greedy"),
@@ -69,8 +68,8 @@ fn run_greedy(runs: u32, iterations: u32) {
     pool.scoped(|scope| {
         for x in vec {
             scope.execute(move || greedy_bernoulli(runs, iterations, f64::from(x) / 100.0));
-            // scope.execute(move || epsilon_bernoulli(r, n, f64::from(x) / 100.0, 0.1))
         }
     });
+    print!("Done.");
     println!("{}", start.elapsed().as_secs());
 }
