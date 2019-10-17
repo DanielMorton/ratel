@@ -52,10 +52,8 @@ fn run_epsilon(runs: u32, iterations: u32, epsilon: f64) {
     let start = Instant::now();
     pool.scoped(|scope| {
         for x in vec {
-            scope.execute(move || {
-                epsilon_bernoulli(runs, iterations, f64::from(x) / 100.0, epsilon)
-            });
-            // scope.execute(move || epsilon_bernoulli(r, n, f64::from(x) / 100.0, 0.1))
+            scope
+                .execute(move || epsilon_bernoulli(runs, iterations, f64::from(x) / 100.0, epsilon))
         }
     });
     println!("{}", start.elapsed().as_secs());
@@ -70,6 +68,5 @@ fn run_greedy(runs: u32, iterations: u32) {
             scope.execute(move || greedy_bernoulli(runs, iterations, f64::from(x) / 100.0));
         }
     });
-    print!("Done.");
     println!("{}", start.elapsed().as_secs());
 }
