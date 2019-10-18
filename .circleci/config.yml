@@ -2,21 +2,21 @@ version: 2
 jobs:
   build38:
     docker:
-      - image: circleci/rust:1.38-buster
+      - image: circleci/rust:1.38
     steps:
       - checkout
       - run: cargo test --all --verbose
       - run: cargo build
   build37:
     docker:
-      - image: circleci/rust:1.37-buster
+      - image: circleci/rust:1.37
     steps:
       - checkout
       - run: cargo test --all --verbose
       - run: cargo build
   build36:
     docker:
-      - image: circleci/rust:1.36-buster
+      - image: circleci/rust:1.36
     steps:
       - checkout
       - run: cargo test --all --verbose
@@ -24,6 +24,27 @@ jobs:
   build35:
     docker:
       - image: circleci/rust:1.35
+    steps:
+      - checkout
+      - run: cargo test --all --verbose
+      - run: cargo build
+  build34:
+    docker:
+      - image: circleci/rust:1.34.2
+    steps:
+      - checkout
+      - run: cargo test --all --verbose
+      - run: cargo build
+  build33:
+    docker:
+      - image: circleci/rust:1.33
+    steps:
+      - checkout
+      - run: cargo test --all --verbose
+      - run: cargo build
+  build32:
+    docker:
+      - image: circleci/rust:1.32
     steps:
       - checkout
       - run: cargo test --all --verbose
@@ -36,3 +57,6 @@ workflows:
       - build37
       - build36
       - build35
+      - build34
+      - build33
+      - build32
