@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/rust:1.38
+      - image: circleci/rust:1.38-buster
     steps:
       - run: cargo test --all --verbose
       - run: cargo build
