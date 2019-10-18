@@ -23,7 +23,7 @@ jobs:
       - run: cargo build
 workflows:
   version: 2
-  python3:
+  rust:
     jobs:
       - build38
       - build37
