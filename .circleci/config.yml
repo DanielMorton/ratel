@@ -1,9 +1,30 @@
 version: 2
 jobs:
-  build:
+  build38:
     docker:
       - image: circleci/rust:1.38-buster
     steps:
       - checkout
       - run: cargo test --all --verbose
       - run: cargo build
+  build37:
+    docker:
+      - image: circleci/rust:1.37-buster
+    steps:
+      - checkout
+      - run: cargo test --all --verbose
+      - run: cargo build
+  build36:
+    docker:
+      - image: circleci/rust:1.36-buster
+    steps:
+      - checkout
+      - run: cargo test --all --verbose
+      - run: cargo build
+workflows:
+  version: 2
+  python3:
+    jobs:
+      - build38
+      - build37
+      - build36
