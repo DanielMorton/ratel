@@ -21,6 +21,13 @@ jobs:
       - checkout
       - run: cargo test --all --verbose
       - run: cargo build
+  build35:
+    docker:
+      - image: circleci/rust:1.35
+    steps:
+      - checkout
+      - run: cargo test --all --verbose
+      - run: cargo build
 workflows:
   version: 2
   rust:
@@ -28,3 +35,4 @@ workflows:
       - build38
       - build37
       - build36
+      - build35
