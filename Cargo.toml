@@ -9,6 +9,7 @@ edition = "2018"
 [dependencies]
 assert_approx_eq = "*"
 clap = "*"
+itertools = "*"
 lazy_static = "*"
 num-traits = "*"
 rand = "*"

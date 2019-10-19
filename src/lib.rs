@@ -4,7 +4,7 @@ extern crate lazy_static;
 pub use agent::{Agent, EpsilonGreedyAgent, GreedyAgent};
 pub use bandit::{Bandit, BinomialBandit, GaussianBandit};
 pub use game::Game;
-pub use run::{epsilon_bernoulli, greedy_bernoulli, sequential_bernoulli};
+pub use run::{epsilon_bernoulli, greedy_bernoulli, pair_greedy, sequential_bernoulli};
 pub use util::{Counter, HarmonicStepper, RecordCounter, Stepper};
 
 mod agent;
