@@ -1,10 +1,9 @@
-use std::panic::resume_unwind;
 use std::time::Instant;
 
 use clap::{App, Arg, value_t};
 use scoped_threadpool::Pool;
 
-use ratel::{epsilon_bernoulli, pair_greedy, sequential_bernoulli};
+use ratel::{pair_epsilon, pair_greedy, sequential_bernoulli};
 
 fn main() {
     let matches = App::new("Ratel")
@@ -38,10 +37,19 @@ fn main() {
         .arg(
             Arg::with_name("pair_greedy")
                 .short("pg")
-                .help("Use the epsilon-greedy algorithm")
-                .takes_value(true)
+                .help("Use the greedy algorithm with two-armed bandits")
                 .conflicts_with("greedy")
                 .conflicts_with("epsilon_greedy"),
+        )
+        .arg(
+            Arg::with_name("pair_epsilon")
+                .short("pe")
+                .long("pair-epsilon")
+                .help("Use the epsilon-greedy algorithm with two-armed bandits")
+                .takes_value(true)
+                .conflicts_with("greedy")
+                .conflicts_with("epsilon_greedy")
+                .conflicts_with("pair_greedy"),
         )
         .get_matches();
     let runs = value_t!(matches.value_of("runs"), u32).unwrap_or_else(|e| e.exit());
@@ -56,6 +64,11 @@ fn main() {
         let start = Instant::now();
         pair_greedy(runs, iterations);
         println!("{}", start.elapsed().as_secs());
+    } else if matches.is_present("pair_epsilon") {
+        let epsilon = value_t!(matches.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
+        let start = Instant::now();
+        pair_epsilon(runs, iterations, epsilon);
+        println!("{}", start.elapsed().as_secs());
     }
 }
 
@@ -65,8 +78,9 @@ fn run_epsilon(runs: u32, iterations: u32, epsilon: f64) {
     let start = Instant::now();
     pool.scoped(|scope| {
         for x in vec {
-            scope
-                .execute(move || epsilon_bernoulli(runs, iterations, f64::from(x) / 100.0, epsilon))
+            scope.execute(move || {
+                sequential_bernoulli(runs, iterations, f64::from(x) / 100.0, epsilon)
+            })
         }
     });
     println!("{}", start.elapsed().as_secs());
@@ -78,7 +92,8 @@ fn run_greedy(runs: u32, iterations: u32) {
     let start = Instant::now();
     pool.scoped(|scope| {
         for x in int_vec {
-            scope.execute(move || sequential_bernoulli(runs, iterations, f64::from(x) / 100.0));
+            scope
+                .execute(move || sequential_bernoulli(runs, iterations, f64::from(x) / 100.0, 0.0));
         }
     });
     println!("{}", start.elapsed().as_secs());
