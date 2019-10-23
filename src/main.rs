@@ -37,6 +37,7 @@ fn main() {
         .arg(
             Arg::with_name("pair_greedy")
                 .short("pg")
+                .long("pair-greedy")
                 .help("Use the greedy algorithm with two-armed bandits")
                 .conflicts_with("greedy")
                 .conflicts_with("epsilon_greedy"),
