@@ -6,7 +6,7 @@ use scoped_threadpool::Pool;
 
 use super::{epsilon_bernoulli, greedy_bernoulli};
 
-pub fn pair_greedy(runs: u32, iterations: u32) {
+pub fn pair_greedy(runs: u32, iterations: u32, agent_start: f64) {
     let reward_vec: Vec<f64> = (1..=99).into_iter().map(|x| f64::from(x) / 100.0).collect();
     let pair_vec: Vec<Vec<f64>> = (&reward_vec)
         .into_iter()
@@ -15,7 +15,6 @@ pub fn pair_greedy(runs: u32, iterations: u32) {
         .map(|(x, y)| vec![*x, *y])
         .collect();
     let mut pool = Pool::new(12);
-    let agent_start = 1.0;
     pool.scoped(|scope| {
         pair_vec.into_iter().for_each(|pair| {
             scope.execute(move || {

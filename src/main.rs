@@ -63,7 +63,10 @@ fn main() {
         run_epsilon(runs, iterations, epsilon)
     } else if matches.is_present("pair_greedy") {
         let start = Instant::now();
-        pair_greedy(runs, iterations);
+        (1..=10)
+            .into_iter()
+            .map(|x| f64::from(x) / 10.0)
+            .for_each(|s| pair_greedy(runs, iterations, s));
         println!("{}", start.elapsed().as_secs());
     } else if matches.is_present("pair_epsilon") {
         let epsilon = value_t!(matches.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
