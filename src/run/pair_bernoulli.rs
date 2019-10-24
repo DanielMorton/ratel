@@ -18,8 +18,11 @@ pub fn pair_greedy(runs: u32, iterations: u32, agent_start: f64) {
     pool.scoped(|scope| {
         pair_vec.into_iter().for_each(|pair| {
             scope.execute(move || {
-                let mut file =
-                    File::create(format!("results/pair/pair_{}_{}.csv", pair[0], pair[1])).unwrap();
+                let mut file = File::create(format!(
+                    "results/pair/pair_a{}_{}_{}.csv",
+                    agent_start, pair[0], pair[1]
+                ))
+                    .unwrap();
                 let (wins, rewards) = greedy_bernoulli(runs, iterations, agent_start, pair);
                 let greedy = wins
                     .into_iter()

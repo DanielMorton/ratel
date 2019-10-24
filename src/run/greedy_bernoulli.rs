@@ -21,20 +21,20 @@ pub fn greedy_bernoulli(
     );
     let bandit = BinomialBandit::new(vec![1; rewards.len()], rewards.clone());
     let mut game = Game::new(&mut agent, &bandit);
-    let mut wins = vec![0.0; iterations as usize];
-    let mut reward_out = vec![0.0; iterations as usize];
+    let mut wins = vec![0u32; iterations as usize];
+    let mut reward_out = vec![0u32; iterations as usize];
 
-    for _ in 0..=runs {
+    for _ in 0..runs {
         game.run(iterations);
         wins = wins
             .into_iter()
             .zip(game.wins().into_iter())
-            .map(|w| w.0 + f64::from(*w.1))
+            .map(|(w, gw)| w + *gw)
             .collect();
         reward_out = reward_out
             .into_iter()
             .zip(game.rewards().into_iter())
-            .map(|ro| ro.0 + f64::from(*ro.1))
+            .map(|(r, gr)| r + *gr)
             .collect();
         game.reset(
             (1..=rewards.len())
@@ -43,10 +43,13 @@ pub fn greedy_bernoulli(
                 .collect(),
         )
     }
-    wins = wins.into_iter().map(|w| w / f64::from(runs)).collect();
-    reward_out = reward_out
-        .into_iter()
-        .map(|ro| ro / f64::from(runs))
-        .collect();
-    (wins, reward_out)
+    (
+        wins.into_iter()
+            .map(|w| f64::from(w) / f64::from(runs))
+            .collect(),
+        reward_out
+            .into_iter()
+            .map(|ro| f64::from(ro) / f64::from(runs))
+            .collect(),
+    )
 }
