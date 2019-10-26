@@ -3,7 +3,7 @@ use std::time::Instant;
 use clap::{App, Arg, value_t};
 use scoped_threadpool::Pool;
 
-use ratel::{pair_epsilon, pair_greedy, sequential_bernoulli};
+use ratel::{pair_epsilon, pair_greedy, print_hms, sequential_bernoulli};
 
 fn main() {
     let matches = App::new("Ratel")
@@ -67,7 +67,7 @@ fn main() {
             .into_iter()
             .map(|x| f64::from(x) / 10.0)
             .for_each(|s| pair_greedy(runs, iterations, s));
-        println!("{}", start.elapsed().as_secs());
+        println!("{}:{}:{}", start.elapsed().as_, start.elapsed().as_secs());
     } else if matches.is_present("pair_epsilon") {
         let epsilon = value_t!(matches.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
         let start = Instant::now();
@@ -87,7 +87,7 @@ fn run_epsilon(runs: u32, iterations: u32, epsilon: f64) {
             })
         }
     });
-    println!("{}", start.elapsed().as_secs());
+    print_hms(start);
 }
 
 fn run_greedy(runs: u32, iterations: u32) {
@@ -100,5 +100,5 @@ fn run_greedy(runs: u32, iterations: u32) {
                 .execute(move || sequential_bernoulli(runs, iterations, f64::from(x) / 100.0, 0.0));
         }
     });
-    println!("{}", start.elapsed().as_secs());
+    print_hms(start);
 }
