@@ -67,12 +67,12 @@ fn main() {
             .into_iter()
             .map(|x| f64::from(x) / 10.0)
             .for_each(|s| pair_greedy(runs, iterations, s));
-        println!("{}:{}:{}", start.elapsed().as_, start.elapsed().as_secs());
+        print_hms(start);
     } else if matches.is_present("pair_epsilon") {
         let epsilon = value_t!(matches.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
         let start = Instant::now();
         pair_epsilon(runs, iterations, epsilon);
-        println!("{}", start.elapsed().as_secs());
+        print_hms(start);
     }
 }
 
