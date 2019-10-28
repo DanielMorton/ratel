@@ -35,7 +35,7 @@ pub fn pair_greedy(runs: u32, iterations: u32, agent_start: f64) {
     })
 }
 
-pub fn pair_epsilon(runs: u32, iterations: u32, epsilon: f64) {
+pub fn pair_epsilon(runs: u32, iterations: u32, agent_start: f64, epsilon: f64) {
     let reward_vec: Vec<f64> = (1..=99).into_iter().map(|x| f64::from(x) / 100.0).collect();
     let pair_vec: Vec<Vec<f64>> = (&reward_vec)
         .into_iter()
@@ -44,13 +44,12 @@ pub fn pair_epsilon(runs: u32, iterations: u32, epsilon: f64) {
         .map(|(x, y)| vec![*x, *y])
         .collect();
     let mut pool = Pool::new(12);
-    let agent_start = 1.0;
     pool.scoped(|scope| {
         pair_vec.into_iter().for_each(|pair| {
             scope.execute(move || {
                 let mut file = File::create(format!(
-                    "results/pair/epsilon_e{}_{}_{}.csv",
-                    epsilon, pair[0], pair[1]
+                    "results/pair/epsilon_e{}_a{}_{}_{}.csv",
+                    epsilon, agent_start, pair[0], pair[1]
                 ))
                     .unwrap();
                 let (wins, rewards) =

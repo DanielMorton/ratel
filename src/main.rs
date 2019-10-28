@@ -71,7 +71,10 @@ fn main() {
     } else if matches.is_present("pair_epsilon") {
         let epsilon = value_t!(matches.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
         let start = Instant::now();
-        pair_epsilon(runs, iterations, epsilon);
+        (1..=10)
+            .into_iter()
+            .map(|x| f64::from(x) / 10.0)
+            .for_each(|s| pair_epsilon(runs, iterations, s, epsilon));
         print_hms(start);
     }
 }
