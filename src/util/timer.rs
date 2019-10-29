@@ -6,15 +6,7 @@ pub fn print_hms(start: Instant) -> () {
     println!(
         "{}:{}:{}",
         hour,
-        if minute < 10 {
-            format!("0{}", minute)
-        } else {
-            format!("{}", minute)
-        },
-        if second < 10 {
-            format!("0{}", seconds)
-        } else {
-            format!("{}", second)
-        }
+        format!(if minute < 10 { "0{}" } else { "{}" }, minute),
+        format!(if second < 10 { "0{}" } else { "{}" }, second)
     )
 }
