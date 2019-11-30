@@ -60,6 +60,7 @@ workflows:
   version: 2
   rust:
     jobs:
+      - build39
       - build38
       - build37
       - build36
