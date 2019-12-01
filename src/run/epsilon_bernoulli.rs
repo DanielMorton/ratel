@@ -1,6 +1,3 @@
-use std::fs::File;
-use std::io::Write;
-
 use rand::distributions::Distribution;
 use rand::thread_rng;
 use rand_distr::uniform::Uniform;

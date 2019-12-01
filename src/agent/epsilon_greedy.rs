@@ -34,7 +34,11 @@ impl<'a, T: ToPrimitive> Agent<T> for EpsilonGreedyAgent<'a> {
     }
 
     fn step(&mut self, arm: usize, reward: T) -> () {
-        self.q_star[arm] += self.stepper.step(arm) * (reward.to_f64().unwrap() - self.q_star[arm])
+        self.q_star[arm] += self.update(arm, reward)
+    }
+
+    fn stepper(&mut self) -> &mut dyn Stepper {
+        self.stepper
     }
 }
 
