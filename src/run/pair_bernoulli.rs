@@ -8,11 +8,11 @@ use super::{epsilon_bernoulli, greedy_bernoulli, optimistic_bernoulli};
 
 pub fn pair_greedy(runs: u32, iterations: u32, agent_start: f64) {
     let reward_vec: Vec<f64> = (1..=99).into_iter().map(|x| f64::from(x) / 100.0).collect();
-    let pair_vec: Vec<Vec<f64>> = (&reward_vec)
-        .into_iter()
-        .cartesian_product((&reward_vec).into_iter())
-        .filter(|(x, y)| x < y)
-        .map(|(x, y)| vec![*x, *y])
+    let pair_vec: Vec<Vec<f64>> = reward_vec
+        .iter()
+        .cartesian_product(&reward_vec)
+        .filter(|(&x, &y)| x < y)
+        .map(|(&x, y)| vec![x, *y])
         .collect();
     let mut pool = Pool::new(12);
     pool.scoped(|scope| {
@@ -37,13 +37,12 @@ pub fn pair_greedy(runs: u32, iterations: u32, agent_start: f64) {
 
 pub fn pair_epsilon(runs: u32, iterations: u32, agent_start: f64, epsilon: f64) {
     let reward_vec: Vec<f64> = (1..=99).into_iter().map(|x| f64::from(x) / 100.0).collect();
-    let pair_vec: Vec<Vec<f64>> = (&reward_vec)
-        .into_iter()
-        .cartesian_product((&reward_vec).into_iter())
-        .filter(|(x, y)| x < y)
-        .map(|(x, y)| vec![*x, *y])
+    let pair_vec: Vec<Vec<f64>> = reward_vec
+        .iter()
+        .cartesian_product(&reward_vec)
+        .filter(|(&x, &y)| x < y)
+        .map(|(&x, y)| vec![x, *y])
         .collect();
-    print!("{}", pair_vec.len());
     let mut pool = Pool::new(12);
     pool.scoped(|scope| {
         pair_vec.into_iter().for_each(|pair| {
@@ -68,13 +67,12 @@ pub fn pair_epsilon(runs: u32, iterations: u32, agent_start: f64, epsilon: f64) 
 
 pub fn pair_optimistic(runs: u32, iterations: u32, agent_start: f64, c: f64) {
     let reward_vec: Vec<f64> = (1..=99).into_iter().map(|x| f64::from(x) / 100.0).collect();
-    let pair_vec: Vec<Vec<f64>> = (&reward_vec)
+    let pair_vec: Vec<Vec<f64>> = reward_vec
         .iter()
         .cartesian_product(&reward_vec)
-        .filter(|(x, y)| x < y)
-        .map(|(x, y)| vec![*x, *y])
+        .filter(|(&x, &y)| x < y)
+        .map(|(&x, y)| vec![x, *y])
         .collect();
-    print!("{}", pair_vec.len());
     let mut pool = Pool::new(12);
     pool.scoped(|scope| {
         pair_vec.into_iter().for_each(|pair| {
