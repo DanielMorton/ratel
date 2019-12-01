@@ -1,18 +1,21 @@
+use std::marker::PhantomData;
+
 use num_traits::ToPrimitive;
 
 use crate::Stepper;
 
 use super::{Agent, ArgBounds};
 
-pub struct OptimisticAgent<'a> {
+pub struct OptimisticAgent<'a, T> {
     q_star: Vec<f64>,
     c: f64,
     total: f64,
     arm_total: Vec<f64>,
     stepper: &'a mut dyn Stepper,
+    phantom: PhantomData<T>,
 }
 
-impl<'a, T: ToPrimitive> Agent<T> for OptimisticAgent<'a> {
+impl<'a, T: ToPrimitive> Agent<T> for OptimisticAgent<'a, T> {
     fn action(&self) -> usize {
         self.q_star
             .iter()
@@ -42,18 +45,70 @@ impl<'a, T: ToPrimitive> Agent<T> for OptimisticAgent<'a> {
     }
 }
 
-impl<'a> OptimisticAgent<'a> {
-    pub fn new(q_init: Vec<f64>, c: f64, stepper: &mut dyn Stepper) -> OptimisticAgent {
+impl<'a, T> OptimisticAgent<'a, T> {
+    pub fn new(q_init: Vec<f64>, c: f64, stepper: &mut dyn Stepper) -> OptimisticAgent<T> {
+        assert!(c > 0.0);
         OptimisticAgent {
-            arm_total: vec![0.0; q_init.len()],
+            arm_total: vec![1.0; q_init.len()],
             q_star: q_init,
             c,
-            total: 0.0,
+            total: 1.0,
             stepper,
+            phantom: PhantomData,
         }
     }
 
     fn arm_total(&self) -> &Vec<f64> {
         &self.arm_total
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::{HarmonicStepper, Stepper};
+
+    use super::{Agent, OptimisticAgent};
+
+    lazy_static! {
+        static ref Q_INIT: Vec<f64> = vec![0.5, 0.61, 0.7, 0.12, 0.37];
+    }
+
+    #[test]
+    fn test_new() {
+        let mut STEPPER = HarmonicStepper::new(1, Q_INIT.len());
+        let c = 2.0;
+        let OPTIMISTIC: OptimisticAgent<u32> =
+            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut STEPPER);
+        assert_eq!(OPTIMISTIC.c, c);
+        assert_eq!(OPTIMISTIC.q_star, vec![0.5, 0.61, 0.7, 0.12, 0.37])
+    }
+
+    #[test]
+    fn test_action() {
+        let mut STEPPER = HarmonicStepper::new(1, Q_INIT.len());
+        let c = 2.0;
+        let OPTIMISTIC: OptimisticAgent<u32> =
+            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut STEPPER);
+        assert_eq!(OPTIMISTIC.action(), 2)
+    }
+
+    #[test]
+    fn test_q_star() {
+        let mut STEPPER = HarmonicStepper::new(1, Q_INIT.len());
+        let c = 2.0;
+        let OPTIMISTIC: OptimisticAgent<u32> =
+            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut STEPPER);
+        assert_eq!(OPTIMISTIC.q_star(), &vec![0.5, 0.61, 0.7, 0.12, 0.37])
+    }
+
+    #[test]
+    fn test_reset() {
+        let mut STEPPER = HarmonicStepper::new(1, Q_INIT.len());
+        let c = 2.0;
+        let mut OPTIMISTIC: OptimisticAgent<u32> =
+            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut STEPPER);
+        let new_q = vec![0.01, 0.86, 0.43, 0.65, 0.66];
+        OPTIMISTIC.reset(new_q.clone());
+        assert_eq!(OPTIMISTIC.q_star(), &new_q)
     }
 }
