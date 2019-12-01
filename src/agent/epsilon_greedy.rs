@@ -56,7 +56,7 @@ impl<'a, T> EpsilonGreedyAgent<'a, T> {
             epsilon,
             uniform: Uniform::new(0.0, 1.0),
             pick_arm: Uniform::new(0usize, l),
-            phantom: PhantomData
+            phantom: PhantomData,
         }
     }
 }
