@@ -4,7 +4,33 @@ use std::io::Write;
 use itertools::Itertools;
 use scoped_threadpool::Pool;
 
-use super::{epsilon_bernoulli, greedy_bernoulli, optimistic_bernoulli};
+use rand::distributions::Distribution;
+use rand::thread_rng;
+use rand_distr::uniform::Uniform;
+
+use super::{epsilon_bernoulli, greedy_bernoulli, optimistic_bernoulli, GreedyAgent, HarmonicStepper};
+use clap::ArgMatches;
+
+pub fn pair_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMatches) {
+    let reward_vec: Vec<f64> = (1..=99).into_iter().map(|x| f64::from(x) / 100.0).collect();
+    let mut stepper = HarmonicStepper::new(1, rewards.len());
+    let rand_start = Uniform::new(agent_start - 1e-7, agent_start + 1e-7);
+    let pair_vec: Vec<Vec<f64>> = reward_vec
+        .iter()
+        .cartesian_product(&reward_vec)
+        .filter(|(&x, &y)| x < y)
+        .map(|(&x, y)| vec![x, *y])
+        .collect();
+    let mut agent = if arg.is_present("pair_greedy") {
+        GreedyAgent::new(
+            (1..=rewards.len())
+                .into_iter()
+                .map(|_| rand_start.sample(&mut thread_rng()))
+                .collect(),
+            &mut stepper,
+        )
+    } else
+}
 
 pub fn pair_greedy(runs: u32, iterations: u32, agent_start: f64) {
     let reward_vec: Vec<f64> = (1..=99).into_iter().map(|x| f64::from(x) / 100.0).collect();
