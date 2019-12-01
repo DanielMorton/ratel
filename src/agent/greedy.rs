@@ -57,24 +57,24 @@ mod tests {
 
     #[test]
     fn test_action() {
-        let mut STEPPER = HarmonicStepper::new(1, Q_INIT.len());
-        let GREEDY: GreedyAgent<u32> = GreedyAgent::new(Q_INIT.to_vec(), &mut STEPPER);
-        assert_eq!(GREEDY.action(), 2)
+        let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
+        let greedy: GreedyAgent<u32> = GreedyAgent::new(Q_INIT.to_vec(), &mut stepper);
+        assert_eq!(greedy.action(), 2)
     }
 
     #[test]
     fn test_q_star() {
-        let mut STEPPER = HarmonicStepper::new(1, Q_INIT.len());
-        let GREEDY: GreedyAgent<u32> = GreedyAgent::new(Q_INIT.to_vec(), &mut STEPPER);
-        assert_eq!(GREEDY.q_star(), &vec![0.5, 0.61, 0.7, 0.12, 0.37])
+        let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
+        let greedy: GreedyAgent<u32> = GreedyAgent::new(Q_INIT.to_vec(), &mut stepper);
+        assert_eq!(greedy.q_star(), &vec![0.5, 0.61, 0.7, 0.12, 0.37])
     }
 
     #[test]
     fn test_reset() {
-        let mut STEPPER = HarmonicStepper::new(1, Q_INIT.len());
-        let mut GREEDY: GreedyAgent<u32> = GreedyAgent::new(Q_INIT.to_vec(), &mut STEPPER);
+        let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
+        let mut greedy: GreedyAgent<u32> = GreedyAgent::new(Q_INIT.to_vec(), &mut stepper);
         let new_q = vec![0.01, 0.86, 0.43, 0.65, 0.66];
-        GREEDY.reset(new_q.clone());
-        assert_eq!(GREEDY.q_star(), &new_q)
+        greedy.reset(new_q.clone());
+        assert_eq!(greedy.q_star(), &new_q)
     }
 }

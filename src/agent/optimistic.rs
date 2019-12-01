@@ -75,40 +75,40 @@ mod tests {
 
     #[test]
     fn test_new() {
-        let mut STEPPER = HarmonicStepper::new(1, Q_INIT.len());
+        let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
         let c = 2.0;
-        let OPTIMISTIC: OptimisticAgent<u32> =
-            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut STEPPER);
-        assert_eq!(OPTIMISTIC.c, c);
-        assert_eq!(OPTIMISTIC.q_star, vec![0.5, 0.61, 0.7, 0.12, 0.37])
+        let optimistic: OptimisticAgent<u32> =
+            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut stepper);
+        assert_eq!(optimistic.c, c);
+        assert_eq!(optimistic.q_star, vec![0.5, 0.61, 0.7, 0.12, 0.37])
     }
 
     #[test]
     fn test_action() {
-        let mut STEPPER = HarmonicStepper::new(1, Q_INIT.len());
+        let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
         let c = 2.0;
-        let OPTIMISTIC: OptimisticAgent<u32> =
-            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut STEPPER);
-        assert_eq!(OPTIMISTIC.action(), 2)
+        let optimistic: OptimisticAgent<u32> =
+            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut stepper);
+        assert_eq!(optimistic.action(), 2)
     }
 
     #[test]
     fn test_q_star() {
-        let mut STEPPER = HarmonicStepper::new(1, Q_INIT.len());
+        let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
         let c = 2.0;
-        let OPTIMISTIC: OptimisticAgent<u32> =
-            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut STEPPER);
-        assert_eq!(OPTIMISTIC.q_star(), &vec![0.5, 0.61, 0.7, 0.12, 0.37])
+        let optimistic: OptimisticAgent<u32> =
+            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut stepper);
+        assert_eq!(optimistic.q_star(), &vec![0.5, 0.61, 0.7, 0.12, 0.37])
     }
 
     #[test]
     fn test_reset() {
-        let mut STEPPER = HarmonicStepper::new(1, Q_INIT.len());
+        let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
         let c = 2.0;
-        let mut OPTIMISTIC: OptimisticAgent<u32> =
-            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut STEPPER);
+        let mut optimistic: OptimisticAgent<u32> =
+            OptimisticAgent::new(Q_INIT.to_vec(), c, &mut stepper);
         let new_q = vec![0.01, 0.86, 0.43, 0.65, 0.66];
-        OPTIMISTIC.reset(new_q.clone());
-        assert_eq!(OPTIMISTIC.q_star(), &new_q)
+        optimistic.reset(new_q.clone());
+        assert_eq!(optimistic.q_star(), &new_q)
     }
 }
