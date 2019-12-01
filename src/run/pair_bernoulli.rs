@@ -43,6 +43,7 @@ pub fn pair_epsilon(runs: u32, iterations: u32, agent_start: f64, epsilon: f64) 
         .filter(|(x, y)| x < y)
         .map(|(x, y)| vec![*x, *y])
         .collect();
+    print!("{}", pair_vec.len());
     let mut pool = Pool::new(12);
     pool.scoped(|scope| {
         pair_vec.into_iter().for_each(|pair| {
@@ -66,9 +67,14 @@ pub fn pair_epsilon(runs: u32, iterations: u32, agent_start: f64, epsilon: f64) 
 }
 
 pub fn pair_optimistic(runs: u32, iterations: u32, agent_start: f64, c: f64) {
-    let reward_vec: Vec<f64> = (1..=9).into_iter().map(|x| f64::from(x) / 10.0).collect();
-    let pair_vec: Vec<Vec<f64>> = (&reward_vec).iter().cartesian_product(&reward_vec)
-        .filter(|(x, y)| x < y).map(|(x, y)| vec![*x, *y]).collect();
+    let reward_vec: Vec<f64> = (1..=99).into_iter().map(|x| f64::from(x) / 100.0).collect();
+    let pair_vec: Vec<Vec<f64>> = (&reward_vec)
+        .iter()
+        .cartesian_product(&reward_vec)
+        .filter(|(x, y)| x < y)
+        .map(|(x, y)| vec![*x, *y])
+        .collect();
+    print!("{}", pair_vec.len());
     let mut pool = Pool::new(12);
     pool.scoped(|scope| {
         pair_vec.into_iter().for_each(|pair| {
@@ -78,8 +84,7 @@ pub fn pair_optimistic(runs: u32, iterations: u32, agent_start: f64, c: f64) {
                     c, agent_start, pair[0], pair[1]
                 ))
                     .unwrap();
-                let (wins, rewards) =
-                    optimistic_bernoulli(runs, iterations, agent_start, c, pair);
+                let (wins, rewards) = optimistic_bernoulli(runs, iterations, agent_start, c, pair);
                 let greedy = wins
                     .into_iter()
                     .zip(rewards.into_iter())

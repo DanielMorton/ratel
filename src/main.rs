@@ -54,6 +54,7 @@ fn main() {
         )
         .arg(
             Arg::with_name("pair_optimistic")
+                .short("o")
                 .long("pair-optimistic")
                 .help("Use the optimistic algorithm with two-armed bandits")
                 .takes_value(true)
