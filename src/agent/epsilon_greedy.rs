@@ -77,7 +77,7 @@ mod tests {
         let eps = 0.1;
         let epsilon: EpsilonGreedyAgent<u32> =
             EpsilonGreedyAgent::new(Q_INIT.to_vec(), &mut stepper, eps);
-        assert_eq!(epsilon.epsilon, epsilon);
+        assert_eq!(epsilon.epsilon, eps);
         assert_eq!(epsilon.q_star, vec![0.5, 0.61, 0.7, 0.12, 0.37])
     }
 
