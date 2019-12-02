@@ -26,7 +26,7 @@ pub fn pool_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMat
     pool.scoped(|scope| {
         pair_vec.into_iter().for_each(|pair| {
             scope.execute(move || {
-                pair_bernoulli(runs, iterations, agent_start, pair, &rand_start, arg);
+                pair_bernoulli(runs, iterations, agent_start, &pair, &rand_start, arg);
             })
         })
     })
@@ -36,7 +36,7 @@ fn pair_bernoulli(
     runs: u32,
     iterations: u32,
     agent_start: f64,
-    pair: Vec<f64>,
+    pair: &Vec<f64>,
     rand_start: &Uniform<f64>,
     arg: &ArgMatches,
 ) {
