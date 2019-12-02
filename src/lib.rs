@@ -5,7 +5,7 @@ pub use agent::{Agent, EpsilonGreedyAgent, GreedyAgent, OptimisticAgent};
 pub use bandit::{Bandit, BinomialBandit, GaussianBandit};
 pub use game::Game;
 pub use run::{
-    epsilon_bernoulli, greedy_bernoulli, pair_epsilon, pair_greedy, pair_optimistic,
+    epsilon_bernoulli, greedy_bernoulli, pool_bernoulli,
     sequential_bernoulli,
 };
 pub use util::{Counter, HarmonicStepper, print_hms, RecordCounter, Stepper};

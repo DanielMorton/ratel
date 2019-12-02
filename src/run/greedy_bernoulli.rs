@@ -19,7 +19,8 @@ pub fn greedy_bernoulli(
             .collect(),
         &mut stepper,
     );
-    let bandit = BinomialBandit::new(vec![1; rewards.len()], rewards.clone());
+    let ones = vec![1; rewards.len()];
+    let bandit = BinomialBandit::new(&ones, &rewards);
     let mut game = Game::new(&mut agent, &bandit);
     let mut wins = vec![0u32; iterations as usize];
     let mut reward_out = vec![0u32; iterations as usize];

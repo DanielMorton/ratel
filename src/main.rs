@@ -3,7 +3,7 @@ use std::time::Instant;
 use clap::{App, Arg, value_t};
 use scoped_threadpool::Pool;
 
-use ratel::{pair_epsilon, pair_greedy, pair_optimistic, print_hms, sequential_bernoulli};
+use ratel::{pool_bernoulli, print_hms, sequential_bernoulli};
 
 fn main() {
     let matches = App::new("Ratel")
@@ -72,28 +72,12 @@ fn main() {
         let epsilon =
             value_t!(matches.value_of("epsilon_greedy"), f64).unwrap_or_else(|e| e.exit());
         run_epsilon(runs, iterations, epsilon)
-    } else if matches.is_present("pair_greedy") {
+    } else if matches.is_present("pair_greedy") || matches.is_present("pair_epsilon") || matches.is_present("pair_optimistic") {
         let start = Instant::now();
         (1..=10)
             .into_iter()
             .map(|x| f64::from(x) / 10.0)
-            .for_each(|s| pair_greedy(runs, iterations, s));
-        print_hms(start);
-    } else if matches.is_present("pair_epsilon") {
-        let epsilon = value_t!(matches.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
-        let start = Instant::now();
-        (1..=10)
-            .into_iter()
-            .map(|x| f64::from(x) / 10.0)
-            .for_each(|s| pair_epsilon(runs, iterations, s, epsilon));
-        print_hms(start);
-    } else if matches.is_present("pair_optimistic") {
-        let c = value_t!(matches.value_of("pair_optimistic"), f64).unwrap_or_else(|e| e.exit());
-        let start = Instant::now();
-        (1..=10)
-            .into_iter()
-            .map(|x| f64::from(x) / 10.0)
-            .for_each(|s| pair_optimistic(runs, iterations, s, c));
+            .for_each(|s| pool_bernoulli(runs, iterations, s, &matches));
         print_hms(start);
     }
 }
