@@ -12,7 +12,7 @@ impl<N: PartialOrd + Copy> ArgBounds<N> for Vec<N> {
     fn arg_max(&self) -> usize {
         self.iter()
             .enumerate()
-            .max_by(|a, b| (a.1).partial_cmp(b.1).unwrap())
+            .max_by(|&a, &b| (a.1).partial_cmp(b.1).unwrap())
             .unwrap()
             .0
     }
@@ -20,22 +20,22 @@ impl<N: PartialOrd + Copy> ArgBounds<N> for Vec<N> {
     fn arg_min(&self) -> usize {
         self.iter()
             .enumerate()
-            .min_by(|a, b| (a.1).partial_cmp(b.1).unwrap())
+            .min_by(|&a, &b| (a.1).partial_cmp(b.1).unwrap())
             .unwrap()
             .0
     }
 
     fn val_max(&self) -> N {
         self.iter()
-            .max_by(|a, b| (*a).partial_cmp(*b).unwrap())
-            .map(|x| x.to_owned())
+            .max_by(|&a, &b| a.partial_cmp(b).unwrap())
+            .map(|&x| x)
             .unwrap()
     }
 
     fn val_min(&self) -> N {
         self.iter()
-            .min_by(|a, b| (*a).partial_cmp(*b).unwrap())
-            .map(|x| x.to_owned())
+            .min_by(|&a, &b| a.partial_cmp(b).unwrap())
+            .map(|&x| x)
             .unwrap()
     }
 }
