@@ -20,7 +20,7 @@ impl<'a, T: ToPrimitive> Agent<T> for OptimisticAgent<'a, T> {
         self.q_star
             .iter()
             .zip(&self.arm_total)
-            .map(|(q, c)| *q + self.c * (self.total.ln() / *c).sqrt())
+            .map(|(&q, &c)| q + self.c * (self.total.ln() / c).sqrt())
             .collect::<Vec<f64>>()
             .arg_max()
     }
@@ -46,7 +46,7 @@ impl<'a, T: ToPrimitive> Agent<T> for OptimisticAgent<'a, T> {
 }
 
 impl<'a, T> OptimisticAgent<'a, T> {
-    pub fn new(q_init: Vec<f64>, c: f64, stepper: &mut dyn Stepper) -> OptimisticAgent<T> {
+    pub fn new(q_init: Vec<f64>, c: f64, stepper: &'a mut dyn Stepper) -> OptimisticAgent<'a, T> {
         assert!(c > 0.0);
         OptimisticAgent {
             arm_total: vec![1.0; q_init.len()],

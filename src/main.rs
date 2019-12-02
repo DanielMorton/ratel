@@ -72,7 +72,10 @@ fn main() {
         let epsilon =
             value_t!(matches.value_of("epsilon_greedy"), f64).unwrap_or_else(|e| e.exit());
         run_epsilon(runs, iterations, epsilon)
-    } else if matches.is_present("pair_greedy") || matches.is_present("pair_epsilon") || matches.is_present("pair_optimistic") {
+    } else if matches.is_present("pair_greedy")
+        || matches.is_present("pair_epsilon")
+        || matches.is_present("pair_optimistic")
+    {
         let start = Instant::now();
         (1..=10)
             .into_iter()

@@ -36,7 +36,7 @@ impl<'a, T: ToPrimitive> Agent<T> for GreedyAgent<'a, T> {
 }
 
 impl<'a, T> GreedyAgent<'a, T> {
-    pub fn new(q_init: Vec<f64>, stepper: &mut dyn Stepper) -> GreedyAgent<T> {
+    pub fn new(q_init: Vec<f64>, stepper: &'a mut dyn Stepper) -> GreedyAgent<'a, T> {
         GreedyAgent {
             q_star: q_init,
             stepper,

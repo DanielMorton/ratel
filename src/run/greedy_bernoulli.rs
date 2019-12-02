@@ -2,7 +2,7 @@ use rand::distributions::Distribution;
 use rand::thread_rng;
 use rand_distr::uniform::Uniform;
 
-use super::{BinomialBandit, Game, GreedyAgent, HarmonicStepper};
+use super::{BinomialBandit, Game, GreedyAgent, HarmonicStepper, random_init};
 
 pub fn greedy_bernoulli(
     runs: u32,
@@ -12,13 +12,8 @@ pub fn greedy_bernoulli(
 ) -> (Vec<f64>, Vec<f64>) {
     let mut stepper = HarmonicStepper::new(1, rewards.len());
     let rand_start = Uniform::new(agent_start - 1e-7, agent_start + 1e-7);
-    let mut agent = GreedyAgent::new(
-        (1..=rewards.len())
-            .into_iter()
-            .map(|_| rand_start.sample(&mut thread_rng()))
-            .collect(),
-        &mut stepper,
-    );
+    let mut q_init = random_init(&rand_start, rewards.len());
+    let mut agent = GreedyAgent::new(q_init, &mut stepper);
     let ones = vec![1; rewards.len()];
     let bandit = BinomialBandit::new(&ones, &rewards);
     let mut game = Game::new(&mut agent, &bandit);
@@ -37,12 +32,7 @@ pub fn greedy_bernoulli(
             .zip(game.rewards().into_iter())
             .map(|(r, gr)| r + *gr)
             .collect();
-        game.reset(
-            (1..=rewards.len())
-                .into_iter()
-                .map(|_| rand_start.sample(&mut thread_rng()))
-                .collect(),
-        )
+        game.reset(random_init(&rand_start, rewards.len()))
     }
     (
         wins.into_iter()

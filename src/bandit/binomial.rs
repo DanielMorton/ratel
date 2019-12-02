@@ -63,8 +63,7 @@ mod tests {
     fn test_arms() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit =
-            BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
         assert_eq!(binom.arms(), 5)
     }
 
@@ -72,8 +71,7 @@ mod tests {
     fn test_best_arm() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit =
-            BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
         assert_eq!(binom.best_arm(), 4)
     }
 
@@ -81,8 +79,7 @@ mod tests {
     fn test_max_reward() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit =
-            BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
         assert_approx_eq!(binom.max_reward(), 5.7)
     }
 
@@ -90,8 +87,7 @@ mod tests {
     fn test_mean() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit =
-            BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
         assert_eq!(binom.mean(1), 3.64)
     }
 
@@ -99,8 +95,7 @@ mod tests {
     fn test_means() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit =
-            BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
         binom
             .means()
             .iter()
@@ -136,8 +131,7 @@ mod tests {
     fn test_reward() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit =
-            BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
         for _ in 0..1000 {
             binom.reward(2);
         }
@@ -147,8 +141,7 @@ mod tests {
     fn test_std() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit =
-            BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
         assert_approx_eq!(binom.std(1), 0.5723635)
     }
 
@@ -156,8 +149,7 @@ mod tests {
     fn test_stds() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit =
-            BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
         binom
             .stds()
             .iter()

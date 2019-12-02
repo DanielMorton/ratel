@@ -8,8 +8,9 @@ use rand::thread_rng;
 use rand_distr::uniform::Uniform;
 use scoped_threadpool::Pool;
 
-use super::{Agent, BinomialBandit, EpsilonGreedyAgent, Game, GreedyAgent,
-            HarmonicStepper, OptimisticAgent,
+use super::{
+    Agent, BinomialBandit, EpsilonGreedyAgent, Game, GreedyAgent, HarmonicStepper, OptimisticAgent,
+    random_init,
 };
 
 pub fn pool_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMatches) {
@@ -31,39 +32,51 @@ pub fn pool_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMat
     })
 }
 
-fn random_init(rand_start: &Uniform<f64>, len: usize) -> Vec<f64> {
-    (1..=len)
-        .into_iter()
-        .map(|_| rand_start.sample(&mut thread_rng()))
-        .collect()
-}
-
-pub fn pair_bernoulli(runs: u32, iterations: u32, agent_start: f64, pair: Vec<f64>, rand_start: &Uniform<f64>, arg: &ArgMatches) {
-    let q_init = random_init(rand_start, pair.len());
+fn pair_bernoulli(
+    runs: u32,
+    iterations: u32,
+    agent_start: f64,
+    pair: Vec<f64>,
+    rand_start: &Uniform<f64>,
+    arg: &ArgMatches,
+) {
+    let mut q_init = random_init(rand_start, pair.len());
     let mut stepper = HarmonicStepper::new(1, pair.len());
-    let (mut agent, file_name): (Box<dyn Agent<u32>>, String) = if arg.is_present("pair_greedy") {
-        (Box::new(GreedyAgent::new(q_init, &mut stepper)), format!(
-            "results/pair/pair_a{}_{}_{}.csv",
-            agent_start, pair[0], pair[1]
-        ))
-    } else if arg.is_present("pair_epsilon") {
-        let epsilon = value_t!(arg.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
-        (Box::new(EpsilonGreedyAgent::new(q_init, &mut stepper, epsilon)), format!(
-            "results/pair/epsilon_e{}_a{}_{}_{}.csv",
-            epsilon, agent_start, pair[0], pair[1]
-        ))
-    } else if arg.is_present("pair_optimistic") {
-        let c = value_t!(arg.value_of("pair_optimistic"), f64).unwrap_or_else(|e| e.exit());
-        (Box::new(OptimisticAgent::new(q_init, c, &mut stepper)), format!(
-            "results/pair/optimistic_c{}_a{}_{}_{}.csv",
-            c, agent_start, pair[0], pair[1]
-        ))
-    } else {
-        (Box::new(GreedyAgent::new(q_init, &mut stepper)), format!("bad_file.csv"))
-    };
-
     let ones = vec![1; pair.len()];
     let bandit = BinomialBandit::new(&ones, &pair);
+    let (mut agent, file_name): (Box<dyn Agent<u32>>, String) = if arg.is_present("pair_greedy") {
+        (
+            Box::new(GreedyAgent::new(q_init, &mut stepper)),
+            format!(
+                "results/pair/pair_a{}_{}_{}.csv",
+                agent_start, pair[0], pair[1]
+            ),
+        )
+    } else if arg.is_present("pair_epsilon") {
+        let epsilon = value_t!(arg.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
+        (
+            Box::new(EpsilonGreedyAgent::new(q_init, &mut stepper, epsilon)),
+            format!(
+                "results/pair/epsilon_e{}_a{}_{}_{}.csv",
+                epsilon, agent_start, pair[0], pair[1]
+            ),
+        )
+    } else if arg.is_present("pair_optimistic") {
+        let c = value_t!(arg.value_of("pair_optimistic"), f64).unwrap_or_else(|e| e.exit());
+        (
+            Box::new(OptimisticAgent::new(q_init, c, &mut stepper)),
+            format!(
+                "results/pair/optimistic_c{}_a{}_{}_{}.csv",
+                c, agent_start, pair[0], pair[1]
+            ),
+        )
+    } else {
+        (
+            Box::new(GreedyAgent::new(q_init, &mut stepper)),
+            format!("bad_file.csv"),
+        )
+    };
+
     let mut game = Game::new(&mut *agent, &bandit);
     let mut wins = vec![0u32; iterations as usize];
     let mut rewards = vec![0u32; iterations as usize];
@@ -80,12 +93,13 @@ pub fn pair_bernoulli(runs: u32, iterations: u32, agent_start: f64, pair: Vec<f6
             .zip(game.rewards().into_iter())
             .map(|(r, &gr)| r + gr)
             .collect();
-        game.reset(random_init(rand_start, pair.len()))
+        let q_new = random_init(rand_start, pair.len());
+        game.reset(q_new)
     }
-    let greedy = wins.iter()
+    let greedy = wins
+        .iter()
         .map(|&w| f64::from(w) / f64::from(runs))
-        .zip(rewards.iter()
-            .map(|&r| f64::from(r) / f64::from(runs)))
+        .zip(rewards.iter().map(|&r| f64::from(r) / f64::from(runs)))
         .map(|(w, r)| format!("{}, {}", w, r))
         .fold(String::from("wins,rewards"), |s, s0| [s, s0].join("\n"));
     let mut file = File::create(file_name).unwrap();
