@@ -2,8 +2,6 @@ use std::fs::File;
 use std::io::Write;
 
 use clap::{ArgMatches, value_t};
-use rand::distributions::Distribution;
-use rand::thread_rng;
 use rand_distr::uniform::Uniform;
 
 use super::{

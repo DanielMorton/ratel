@@ -1,9 +1,7 @@
-use std::convert::TryFrom;
 use std::fs::File;
 use std::io::Write;
 use std::ops::AddAssign;
 
-use num_traits::{Float, Num, Signed, ToPrimitive, Zero};
 use rand_distr::uniform::Uniform;
 
 use super::{Game, random_init};
