@@ -1,6 +1,6 @@
 use std::time::Instant;
 
-use clap::{App, Arg, value_t};
+use clap::{App, Arg, ArgMatches, value_t};
 use scoped_threadpool::Pool;
 
 use ratel::{pool_bernoulli, print_hms, sequential_bernoulli};
@@ -66,12 +66,8 @@ fn main() {
         .get_matches();
     let runs = value_t!(matches.value_of("runs"), u32).unwrap_or_else(|e| e.exit());
     let iterations = value_t!(matches.value_of("iterations"), u32).unwrap_or_else(|e| e.exit());
-    if matches.is_present("greedy") {
-        run_greedy(runs, iterations)
-    } else if matches.is_present("epsilon_greedy") {
-        let epsilon =
-            value_t!(matches.value_of("epsilon_greedy"), f64).unwrap_or_else(|e| e.exit());
-        run_epsilon(runs, iterations, epsilon)
+    if matches.is_present("greedy") || matches.is_present("epsilon_greedy") {
+        run_bernoulli(runs, iterations, &matches)
     } else if matches.is_present("pair_greedy")
         || matches.is_present("pair_epsilon")
         || matches.is_present("pair_optimistic")
@@ -85,28 +81,16 @@ fn main() {
     }
 }
 
-fn run_epsilon(runs: u32, iterations: u32, epsilon: f64) {
+fn run_bernoulli(runs: u32, iterations: u32, arg: &ArgMatches) {
     let mut pool = Pool::new(12);
-    let vec: Vec<u32> = (1..=100).into_iter().map(|x| x).collect();
+    let vec: Vec<f64> = (1..=100)
+        .into_iter()
+        .map(|x| f64::from(x) / 100.0)
+        .collect();
     let start = Instant::now();
     pool.scoped(|scope| {
         for x in vec {
-            scope.execute(move || {
-                sequential_bernoulli(runs, iterations, f64::from(x) / 100.0, epsilon)
-            })
-        }
-    });
-    print_hms(start);
-}
-
-fn run_greedy(runs: u32, iterations: u32) {
-    let mut pool = Pool::new(12);
-    let int_vec: Vec<u32> = (1..=100).into_iter().map(|x| x).collect();
-    let start = Instant::now();
-    pool.scoped(|scope| {
-        for x in int_vec {
-            scope
-                .execute(move || sequential_bernoulli(runs, iterations, f64::from(x) / 100.0, 0.0));
+            scope.execute(move || sequential_bernoulli(runs, iterations, x, arg))
         }
     });
     print_hms(start);
