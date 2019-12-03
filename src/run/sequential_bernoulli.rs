@@ -7,7 +7,8 @@ use rand::thread_rng;
 use rand_distr::uniform::Uniform;
 
 use super::{
-    Agent, BinomialBandit, EpsilonGreedyAgent, Game, GreedyAgent, HarmonicStepper, random_init,
+    Agent, BinomialBandit, EpsilonGreedyAgent, Game, GreedyAgent, HarmonicStepper, multiple_runs,
+    random_init,
 };
 
 pub fn sequential_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMatches) {
@@ -46,30 +47,6 @@ pub fn sequential_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &
         };
         let bandit = BinomialBandit::new(&ones, &rewards);
         let mut game = Game::new(&mut *agent, &bandit);
-        let mut wins = vec![0u32; iterations as usize];
-        let mut reward_out = vec![0u32; iterations as usize];
-        for _ in 0..runs {
-            game.run(iterations);
-            wins = wins
-                .into_iter()
-                .zip(game.wins().into_iter())
-                .map(|(w, &gw)| w + gw)
-                .collect();
-            reward_out = reward_out
-                .into_iter()
-                .zip(game.rewards().into_iter())
-                .map(|(r, &gr)| r + gr)
-                .collect();
-            let q_new = random_init(&rand_start, rewards.len());
-            game.reset(q_new)
-        }
-        let greedy = wins
-            .iter()
-            .map(|&w| f64::from(w) / f64::from(runs))
-            .zip(reward_out.iter().map(|&r| f64::from(r) / f64::from(runs)))
-            .map(|(w, r)| format!("{}, {}", w, r))
-            .fold(String::from("wins,rewards"), |s, s0| [s, s0].join("\n"));
-        let mut file = File::create(file_name).unwrap();
-        file.write_all(greedy.as_bytes()).unwrap();
+        multiple_runs(&mut game, runs, iterations, &rand_start, file_name)
     })
 }

@@ -24,6 +24,10 @@ impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
         }
     }
 
+    pub fn arms(&self) -> usize {
+        self.bandit.arms()
+    }
+
     fn pull_arm(&mut self) -> () {
         let current_action = self.agent.action();
         self.wins.update((current_action == self.best_arm) as u32);

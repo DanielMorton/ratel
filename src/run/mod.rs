@@ -2,6 +2,7 @@ use rand::distributions::Distribution;
 use rand::thread_rng;
 use rand_distr::uniform::Uniform;
 
+pub use multiple_runs::multiple_runs;
 pub use pair_bernoulli::pool_bernoulli;
 pub use sequential_bernoulli::sequential_bernoulli;
 
@@ -9,6 +10,7 @@ use super::{
     Agent, BinomialBandit, EpsilonGreedyAgent, Game, GreedyAgent, HarmonicStepper, OptimisticAgent,
 };
 
+mod multiple_runs;
 mod pair_bernoulli;
 mod sequential_bernoulli;
 
