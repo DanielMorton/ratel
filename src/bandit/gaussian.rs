@@ -4,13 +4,21 @@ use rand_distr::Normal;
 
 use super::{ArgBounds, Bandit};
 
+/// A bandit whose arms distribute rewards according to Guassian distributions.
 pub struct GaussianBandit<'a> {
+    /// Means of the arms.
     means: &'a Vec<f64>,
+
+    /// Standard deviations of the arms.
     stds: &'a Vec<f64>,
+
+    /// Distributions of the arms.
     distributions: Vec<Normal<f64>>,
 }
 
 impl<'a> GaussianBandit<'a> {
+    /// Initializes a new Bandit where each arm distributes rewards according to a Gaussian
+    /// distribution.
     fn new(means: &'a Vec<f64>, stds: &'a Vec<f64>) -> GaussianBandit<'a> {
         assert_eq!(means.len(), stds.len());
         assert!(stds.val_min() > 0.0);
@@ -28,14 +36,17 @@ impl<'a> GaussianBandit<'a> {
 }
 
 impl<'a> Bandit<f64> for GaussianBandit<'a> {
+    /// The expected return of each arm.
     fn means(&self) -> Vec<f64> {
         self.means.clone()
     }
 
+    /// Determines the reward for pulling a given arm.
     fn reward(&self, arm: usize) -> f64 {
         self.distributions[arm].sample(&mut thread_rng())
     }
 
+    /// The standard deviations of each arm.
     fn stds(&self) -> Vec<f64> {
         self.stds.clone()
     }

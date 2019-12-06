@@ -4,13 +4,15 @@ use rand_distr::Binomial;
 
 use super::{ArgBounds, Bandit};
 
-/// A bandit whose arms distribute rewards according to a binomial distribution.
+/// A bandit whose arms distribute rewards according to binomial distributions.
 pub struct BinomialBandit<'a> {
     /// Vector of number of trials of a `yes-no` experiment.
     nums: &'a Vec<u32>,
 
     /// Vector of experiment success probabilities.
     probs: &'a Vec<f64>,
+
+    /// Distributions of the arms.
     distributions: Vec<Binomial>,
 }
 
