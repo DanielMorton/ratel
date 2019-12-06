@@ -1,3 +1,5 @@
+//! Utility functions and modules used to help the Agents play the Bandits.
+
 pub use arg_bounds::ArgBounds;
 pub use counter::{Counter, RecordCounter};
 pub use stepper::{ConstantStepper, HarmonicStepper, Stepper};

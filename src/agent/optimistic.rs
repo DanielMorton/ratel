@@ -6,16 +6,30 @@ use crate::Stepper;
 
 use super::{Agent, ArgBounds};
 
+/// Agent that follows the Optimistic Algorithm.
+///
+/// Always chooses the arm with the highest confidence bound.
 pub struct OptimisticAgent<'a, T> {
+    /// The current estimates of the Bandit arm values.
     q_star: Vec<f64>,
+
+    /// Confidence bound.
     c: f64,
+
+    /// Total number of rounds the Agent has played.
     total: f64,
+
+    /// Total number of times the Agent has played each arm.
     arm_total: Vec<f64>,
+
+    /// The Agent's rule for step size updates.
     stepper: &'a mut dyn Stepper,
     phantom: PhantomData<T>,
 }
 
 impl<'a, T: ToPrimitive> Agent<T> for OptimisticAgent<'a, T> {
+    /// The action chosen by the Agent. The agent chooses the action with the highest confidence
+    /// bound.
     fn action(&self) -> usize {
         self.q_star
             .iter()
@@ -25,27 +39,32 @@ impl<'a, T: ToPrimitive> Agent<T> for OptimisticAgent<'a, T> {
             .arg_max()
     }
 
+    /// The Agent's current estimate of all the Bandit's arms.
     fn q_star(&self) -> &Vec<f64> {
         &self.q_star
     }
 
+    /// Reset the Agent's history and give it a new initial guess of the Bandit's arm values.
     fn reset(&mut self, q_init: Vec<f64>) {
         self.q_star = q_init;
         self.stepper.reset()
     }
 
+    /// Update the Agent's totals and estimate of a Bandit arm based on a given reward.
     fn step(&mut self, arm: usize, reward: T) -> () {
         self.q_star[arm] += self.update(arm, reward);
         self.arm_total[arm] += 1.0;
         self.total += 1.0
     }
 
+    /// Returns a reference to the Agent's step size update rule.
     fn stepper(&mut self) -> &mut dyn Stepper {
         self.stepper
     }
 }
 
 impl<'a, T> OptimisticAgent<'a, T> {
+    /// Initializes a new Optimistic agent.
     pub fn new(q_init: Vec<f64>, c: f64, stepper: &'a mut dyn Stepper) -> OptimisticAgent<'a, T> {
         assert!(c > 0.0);
         OptimisticAgent {
@@ -58,6 +77,7 @@ impl<'a, T> OptimisticAgent<'a, T> {
         }
     }
 
+    /// Returns a reference to the current number of times each arm has been pulled.
     fn arm_total(&self) -> &Vec<f64> {
         &self.arm_total
     }

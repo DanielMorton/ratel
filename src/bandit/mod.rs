@@ -1,3 +1,5 @@
+//! This module contains the Bandits whose behavior the Agents study.
+
 pub use bandit::Bandit;
 pub use binomial::BinomialBandit;
 pub use gaussian::GaussianBandit;

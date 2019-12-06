@@ -9,16 +9,32 @@ use crate::Stepper;
 
 use super::{Agent, ArgBounds};
 
+/// Agent that follows the Epsilon-Greedy Algorithm.
+///
+/// A fixed (usually small) percentage of the
+/// time it picks a random arm; the rest of the time it picks the arm with the highest expected
+/// reward.
 pub struct EpsilonGreedyAgent<'a, T> {
+    /// The current estimates of the Bandit arm values.
     q_star: Vec<f64>,
+
+    /// The Agent's rule for step size updates.
     stepper: &'a mut dyn Stepper,
+
+    /// The fraction of times a random arm is chosen.
     epsilon: f64,
+
+    /// A random uniform distribution to determine if a random action should be chosen.
     uniform: Uniform<f64>,
+
+    /// A random uniform distribution to chose a random arm.
     pick_arm: Uniform<usize>,
     phantom: PhantomData<T>,
 }
 
 impl<'a, T: ToPrimitive> Agent<T> for EpsilonGreedyAgent<'a, T> {
+    /// The action chosen by the Agent. A random action with probability `epsilon` and the greedy
+    /// action otherwise.
     fn action(&self) -> usize {
         if self.uniform.sample(&mut thread_rng()) < self.epsilon {
             self.pick_arm.sample(&mut thread_rng())
@@ -27,25 +43,30 @@ impl<'a, T: ToPrimitive> Agent<T> for EpsilonGreedyAgent<'a, T> {
         }
     }
 
+    /// The Agent's current estimate of all the Bandit's arms.
     fn q_star(&self) -> &Vec<f64> {
         &self.q_star
     }
 
+    /// Reset the Agent's history and give it a new initial guess of the Bandit's arm values.
     fn reset(&mut self, q_init: Vec<f64>) {
         self.q_star = q_init;
         self.stepper.reset()
     }
 
+    /// Update the Agent's estimate of a Bandit arm based on a given reward.
     fn step(&mut self, arm: usize, reward: T) -> () {
         self.q_star[arm] += self.update(arm, reward)
     }
 
+    /// Returns a reference to the Agent's step size update rule.
     fn stepper(&mut self) -> &mut dyn Stepper {
         self.stepper
     }
 }
 
 impl<'a, T> EpsilonGreedyAgent<'a, T> {
+    /// Initializes a new Epsilon-Greedy agent.
     pub fn new(
         q_init: Vec<f64>,
         stepper: &'a mut dyn Stepper,

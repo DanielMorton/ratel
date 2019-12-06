@@ -6,36 +6,48 @@ use crate::Stepper;
 
 use super::{Agent, ArgBounds};
 
+/// Agent that follows the Greedy Algorithm.
+///
+/// Always chooses the arm with the highest estimated reward.
 pub struct GreedyAgent<'a, T> {
+    /// The current estimates of the Bandit arm values.
     q_star: Vec<f64>,
+
+    /// The Agent's rule for step size updates.
     stepper: &'a mut dyn Stepper,
     phantom: PhantomData<T>,
 }
 
 impl<'a, T: ToPrimitive> Agent<T> for GreedyAgent<'a, T> {
+    /// The action chosen by the Agent. Picks the arm with the highest estimated return.
     fn action(&self) -> usize {
         self.q_star.arg_max()
     }
 
+    /// The Agent's current estimate of all the Bandit's arms.
     fn q_star(&self) -> &Vec<f64> {
         &self.q_star
     }
 
+    /// Reset the Agent's history and give it a new initial guess of the Bandit's arm values.
     fn reset(&mut self, q_init: Vec<f64>) {
         self.q_star = q_init;
         self.stepper.reset()
     }
 
+    /// Update the Agent's estimate of a Bandit arm based on a given reward.
     fn step(&mut self, arm: usize, reward: T) -> () {
         self.q_star[arm] += self.update(arm, reward)
     }
 
+    /// Returns a reference to the Agent's step size update rule.
     fn stepper(&mut self) -> &mut dyn Stepper {
         self.stepper
     }
 }
 
 impl<'a, T> GreedyAgent<'a, T> {
+    /// Initializes a new Greedy agent.
     pub fn new(q_init: Vec<f64>, stepper: &'a mut dyn Stepper) -> GreedyAgent<'a, T> {
         GreedyAgent {
             q_star: q_init,
