@@ -1,12 +1,12 @@
 use std::fs::File;
 use std::io::Write;
 
-use clap::{ArgMatches, value_t};
+use clap::{value_t, ArgMatches};
 use rand_distr::uniform::Uniform;
 
 use super::{
-    Agent, BinomialBandit, EpsilonGreedyAgent, Game, GreedyAgent, HarmonicStepper, multiple_runs,
-    random_init,
+    multiple_runs, random_init, Agent, BinomialBandit, EpsilonGreedyAgent, Game, GreedyAgent,
+    HarmonicStepper,
 };
 
 pub fn sequential_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMatches) {

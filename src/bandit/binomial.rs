@@ -67,8 +67,8 @@ impl<'a> Bandit<u32> for BinomialBandit<'a> {
 mod tests {
     use assert_approx_eq::assert_approx_eq;
 
-    use super::BinomialBandit;
     use super::super::Bandit;
+    use super::BinomialBandit;
 
     #[test]
     fn test_arms() {

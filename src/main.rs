@@ -1,6 +1,6 @@
 use std::time::Instant;
 
-use clap::{App, Arg, ArgMatches, value_t};
+use clap::{value_t, App, Arg, ArgMatches};
 use scoped_threadpool::Pool;
 
 use ratel::{pool_bernoulli, print_hms, sequential_bernoulli};

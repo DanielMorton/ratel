@@ -1,14 +1,14 @@
 use std::fs::File;
 use std::io::Write;
 
-use clap::{ArgMatches, value_t};
+use clap::{value_t, ArgMatches};
 use itertools::Itertools;
 use rand_distr::uniform::Uniform;
 use scoped_threadpool::Pool;
 
 use super::{
-    Agent, BinomialBandit, EpsilonGreedyAgent, Game, GreedyAgent, HarmonicStepper, multiple_runs,
-    OptimisticAgent, random_init,
+    multiple_runs, random_init, Agent, BinomialBandit, EpsilonGreedyAgent, Game, GreedyAgent,
+    HarmonicStepper, OptimisticAgent,
 };
 
 pub fn pool_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMatches) {

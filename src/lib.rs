@@ -14,7 +14,7 @@ pub use agent::{Agent, EpsilonGreedyAgent, GreedyAgent, OptimisticAgent};
 pub use bandit::{Bandit, BinomialBandit, GaussianBandit};
 pub use game::Game;
 pub use run::{pool_bernoulli, sequential_bernoulli};
-pub use util::{Counter, HarmonicStepper, print_hms, RecordCounter, Stepper};
+pub use util::{print_hms, Counter, HarmonicStepper, RecordCounter, Stepper};
 
 mod agent;
 mod bandit;

@@ -54,8 +54,8 @@ impl<'a> Bandit<f64> for GaussianBandit<'a> {
 
 #[cfg(test)]
 mod tests {
-    use super::GaussianBandit;
     use super::super::Bandit;
+    use super::GaussianBandit;
 
     #[test]
     fn test_arms() {
