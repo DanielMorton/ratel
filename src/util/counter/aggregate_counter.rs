@@ -44,8 +44,8 @@ impl<T: AddAssign + Num + ToPrimitive> Counter<T> for AggregateCounter<T> {
 
 #[cfg(test)]
 mod tests {
-    use super::AggregateCounter;
     use super::super::Counter;
+    use super::AggregateCounter;
 
     lazy_static! {
         static ref NUMS_VEC: Vec<i32> = vec![45, 5, 52, 93, 51, 90];

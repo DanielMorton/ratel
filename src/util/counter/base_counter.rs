@@ -34,8 +34,8 @@ impl<T: Num + AddAssign> Counter<T> for BaseCounter<T> {
 
 #[cfg(test)]
 mod tests {
-    use super::BaseCounter;
     use super::super::Counter;
+    use super::BaseCounter;
 
     lazy_static! {
         static ref POS_VEC: Vec<u32> = vec![3, 7, 9, 8, 4, 10, 5];
