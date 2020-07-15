@@ -36,6 +36,9 @@ impl<'a> GaussianBandit<'a> {
 }
 
 impl<'a> Bandit<f64> for GaussianBandit<'a> {
+    ///Returns the number of arms on the bandit.
+    fn arms(&self) -> usize { self.means.len() }
+
     /// The expected return of each arm.
     fn mean(&self, arm: usize) -> f64 {
         self.means[arm]

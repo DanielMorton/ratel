@@ -3,9 +3,7 @@ use super::ArgBounds;
 /// A trait for common members of the Bandits
 pub trait Bandit<T> {
     /// The number of arms of the Bandit
-    fn arms(&self) -> usize {
-        self.means().len()
-    }
+    fn arms(&self) -> usize;
 
     /// The arm with the highest average reward.
     fn best_arm(&self) -> usize {

@@ -38,6 +38,9 @@ impl<'a> BinomialBandit<'a> {
 }
 
 impl<'a> Bandit<u32> for BinomialBandit<'a> {
+    ///Returns the number of arms on the bandit.
+    fn arms(&self) -> usize { self.nums.len() }
+
     /// Computes the expected return of each arm.
     fn mean(&self, arm: usize) -> f64 {
         print!(
