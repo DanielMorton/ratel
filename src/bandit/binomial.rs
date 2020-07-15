@@ -43,10 +43,6 @@ impl<'a> Bandit<u32> for BinomialBandit<'a> {
 
     /// Computes the expected return of each arm.
     fn mean(&self, arm: usize) -> f64 {
-        print!(
-            "Arm {}",
-            arm
-        );
         f64::from(self.nums[arm]) * self.probs[arm]
     }
 

@@ -24,7 +24,7 @@ pub struct OptimisticAgent<'a, T> {
 
     /// The Agent's rule for step size updates.
     stepper: &'a mut dyn Stepper,
-    phantom: PhantomData<T>,
+    phantom: &'a PhantomData<T>,
 }
 
 impl<'a, T: ToPrimitive> Agent<T> for OptimisticAgent<'a, T> {
@@ -73,7 +73,7 @@ impl<'a, T> OptimisticAgent<'a, T> {
             c,
             total: 1.0,
             stepper,
-            phantom: PhantomData,
+            phantom: &PhantomData,
         }
     }
 

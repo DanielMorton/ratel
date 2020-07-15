@@ -1,14 +1,14 @@
 use std::fs::File;
 use std::io::Write;
 
-use clap::{value_t, ArgMatches};
+use clap::{ArgMatches, value_t};
 use itertools::Itertools;
 use rand_distr::uniform::Uniform;
 use scoped_threadpool::Pool;
 
 use super::{
-    multiple_runs, random_init, Agent, BinomialBandit, EpsilonGreedyAgent, Game, GreedyAgent,
-    HarmonicStepper, OptimisticAgent,
+    Agent, BinomialBandit, EpsilonGreedyAgent, Game, GreedyAgent, HarmonicStepper, multiple_runs,
+    OptimisticAgent, random_init,
 };
 
 pub fn pool_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMatches) {
@@ -55,7 +55,7 @@ fn pair_bernoulli(
         (
             Box::new(EpsilonGreedyAgent::new(q_init, &mut stepper, epsilon)),
             format!(
-                "results/pair/epsilon_e{}_a{}_{}_{}.csv",
+                "results2/pair/epsilon_e{}_a{}_{}_{}.csv",
                 epsilon, agent_start, pair[0], pair[1]
             ),
         )
@@ -76,7 +76,5 @@ fn pair_bernoulli(
     };
 
     let mut game = Game::new(&mut *agent, &bandit);
-    let mut wins = vec![0u32; iterations as usize];
-    let mut rewards = vec![0u32; iterations as usize];
     multiple_runs(&mut game, runs, iterations, rand_start, file_name)
 }

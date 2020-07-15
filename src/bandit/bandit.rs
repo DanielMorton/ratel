@@ -1,7 +1,9 @@
+use num_traits::ToPrimitive;
+
 use super::ArgBounds;
 
 /// A trait for common members of the Bandits
-pub trait Bandit<T> {
+pub trait Bandit<T: ToPrimitive> {
     /// The number of arms of the Bandit
     fn arms(&self) -> usize;
 
