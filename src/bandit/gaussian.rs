@@ -37,8 +37,8 @@ impl<'a> GaussianBandit<'a> {
 
 impl<'a> Bandit<f64> for GaussianBandit<'a> {
     /// The expected return of each arm.
-    fn means(&self) -> Vec<f64> {
-        self.means.clone()
+    fn mean(&self, arm: usize) -> f64 {
+        self.means[arm]
     }
 
     /// Determines the reward for pulling a given arm.
@@ -47,15 +47,13 @@ impl<'a> Bandit<f64> for GaussianBandit<'a> {
     }
 
     /// The standard deviations of each arm.
-    fn stds(&self) -> Vec<f64> {
-        self.stds.clone()
-    }
+    fn std(&self, arm: usize) -> f64 { self.stds[arm] }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::super::Bandit;
     use super::GaussianBandit;
+    use super::super::Bandit;
 
     #[test]
     fn test_arms() {

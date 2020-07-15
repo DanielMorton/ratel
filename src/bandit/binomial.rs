@@ -39,12 +39,12 @@ impl<'a> BinomialBandit<'a> {
 
 impl<'a> Bandit<u32> for BinomialBandit<'a> {
     /// Computes the expected return of each arm.
-    fn means(&self) -> Vec<f64> {
-        self.nums
-            .iter()
-            .zip(self.probs)
-            .map(|(&n, &p)| f64::from(n) * p)
-            .collect()
+    fn mean(&self, arm: usize) -> f64 {
+        print!(
+            "Arm {}",
+            arm
+        );
+        f64::from(self.nums[arm]) * self.probs[arm]
     }
 
     /// Determines the reward for pulling a given arm.
@@ -53,13 +53,8 @@ impl<'a> Bandit<u32> for BinomialBandit<'a> {
     }
 
     /// Computes the standard deviations of each arm.
-    fn stds(&self) -> Vec<f64> {
-        self.nums
-            .iter()
-            .zip(self.probs)
-            .map(|(&n, &p)| f64::from(n) * p * (1.0 - p))
-            .map(|s| s.sqrt())
-            .collect()
+    fn std(&self, arm: usize) -> f64 {
+        (f64::from(self.nums[arm]) * self.probs[arm] * (1.0 - self.probs[arm])).sqrt()
     }
 }
 
@@ -67,14 +62,15 @@ impl<'a> Bandit<u32> for BinomialBandit<'a> {
 mod tests {
     use assert_approx_eq::assert_approx_eq;
 
-    use super::super::Bandit;
     use super::BinomialBandit;
+    use super::super::Bandit;
 
     #[test]
     fn test_arms() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
         let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
+        print!("Run Test");
         assert_eq!(binom.arms(), 5)
     }
 

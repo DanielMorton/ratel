@@ -18,21 +18,21 @@ pub trait Bandit<T> {
     }
 
     /// The average reward of a given arm.
-    fn mean(&self, arm: usize) -> f64 {
-        self.means()[arm]
-    }
+    fn mean(&self, arm: usize) -> f64;
 
     /// The average rewards of all the arms.
-    fn means(&self) -> Vec<f64>;
+    fn means(&self) -> Vec<f64> {
+        (0..self.arms()).map(|arm| self.mean(arm)).collect()
+    }
 
     /// The reward from a pull of a given arm.
     fn reward(&self, arm: usize) -> T;
 
     /// The standard deviation of a given arm.
-    fn std(&self, arm: usize) -> f64 {
-        self.stds()[arm]
-    }
+    fn std(&self, arm: usize) -> f64;
 
     /// the standard deviations of all the arms.
-    fn stds(&self) -> Vec<f64>;
+    fn stds(&self) -> Vec<f64> {
+        (0..self.arms()).map(|arm| self.std(arm)).collect()
+    }
 }
