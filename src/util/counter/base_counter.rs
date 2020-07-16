@@ -4,15 +4,19 @@ use num_traits::Num;
 
 use super::Counter;
 
+/// Counter for simple increments.
 struct BaseCounter<T: Num> {
+    /// Current value of counter.
     counter: T,
 }
 
 impl<T: Num + AddAssign> BaseCounter<T> {
+    /// Initializes a new base counter with initial value 0.
     fn new() -> BaseCounter<T> {
         BaseCounter { counter: T::zero() }
     }
 
+    /// Increments the base counter by 1.
     fn increment(&mut self) -> () {
         self.counter += T::one();
     }
@@ -34,8 +38,8 @@ impl<T: Num + AddAssign> Counter<T> for BaseCounter<T> {
 
 #[cfg(test)]
 mod tests {
-    use super::super::Counter;
     use super::BaseCounter;
+    use super::super::Counter;
 
     lazy_static! {
         static ref POS_VEC: Vec<u32> = vec![3, 7, 9, 8, 4, 10, 5];
