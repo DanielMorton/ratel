@@ -29,7 +29,7 @@ pub struct EpsilonGreedyAgent<'a, T> {
 
     /// A random uniform distribution to chose a random arm.
     pick_arm: Uniform<usize>,
-    phantom: &'a PhantomData<T>,
+    phantom: PhantomData<T>,
 }
 
 impl<'a, T: ToPrimitive> Agent<T> for EpsilonGreedyAgent<'a, T> {
@@ -81,7 +81,7 @@ impl<'a, T> EpsilonGreedyAgent<'a, T> {
             epsilon,
             uniform: Uniform::new(0.0, 1.0),
             pick_arm: Uniform::new(0usize, l),
-            phantom: &PhantomData,
+            phantom: PhantomData,
         }
     }
 }

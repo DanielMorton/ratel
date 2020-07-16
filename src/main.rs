@@ -1,6 +1,6 @@
 use std::time::Instant;
 
-use clap::{value_t, App, Arg, ArgMatches};
+use clap::{App, Arg, ArgMatches, value_t};
 use scoped_threadpool::Pool;
 
 use ratel::{pool_bernoulli, print_hms, sequential_bernoulli};
@@ -36,7 +36,6 @@ fn main() {
         )
         .arg(
             Arg::with_name("pair_greedy")
-                .short("pg")
                 .long("pair-greedy")
                 .help("Use the greedy algorithm with two-armed bandits")
                 .conflicts_with("greedy")
@@ -44,7 +43,6 @@ fn main() {
         )
         .arg(
             Arg::with_name("pair_epsilon")
-                .short("pe")
                 .long("pair-epsilon")
                 .help("Use the epsilon-greedy algorithm with two-armed bandits")
                 .takes_value(true)
@@ -54,7 +52,6 @@ fn main() {
         )
         .arg(
             Arg::with_name("pair_optimistic")
-                .short("o")
                 .long("pair-optimistic")
                 .help("Use the optimistic algorithm with two-armed bandits")
                 .takes_value(true)

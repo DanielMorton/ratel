@@ -15,7 +15,7 @@ pub struct GreedyAgent<'a, T> {
 
     /// The Agent's rule for step size updates.
     stepper: &'a mut dyn Stepper,
-    phantom: &'a PhantomData<T>,
+    phantom: PhantomData<T>,
 }
 
 impl<'a, T: ToPrimitive> Agent<T> for GreedyAgent<'a, T> {
@@ -52,7 +52,7 @@ impl<'a, T> GreedyAgent<'a, T> {
         GreedyAgent {
             q_star: q_init,
             stepper,
-            phantom: &PhantomData,
+            phantom: PhantomData,
         }
     }
 }
