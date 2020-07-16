@@ -34,7 +34,7 @@ impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
     }
 
     /// Agent chooses an arm to pull and updates based on reward.
-    fn pull_arm(&mut self) -> () {
+    fn pull_arm(&mut self) {
         let current_action = self.agent.action();
         self.wins.update((current_action == self.bandit.best_arm()) as u32);
         let reward = self.bandit.reward(current_action);
@@ -43,7 +43,7 @@ impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
     }
 
     /// Resets Game. Resets Agent with new initial guess and resets counters.
-    pub fn reset(&mut self, q_init: Vec<f64>) -> () {
+    pub fn reset(&mut self, q_init: Vec<f64>) {
         self.agent.reset(q_init);
         self.rewards.reset();
         self.wins.reset();
@@ -55,7 +55,7 @@ impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
     }
 
     /// Run game for a certain number of steps.
-    pub fn run(&mut self, steps: u32) -> () {
+    pub fn run(&mut self, steps: u32) {
         for _ in 1..=steps {
             self.pull_arm()
         }

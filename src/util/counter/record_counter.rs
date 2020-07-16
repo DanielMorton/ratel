@@ -34,13 +34,13 @@ impl<T: AddAssign + Num + ToPrimitive> Counter<T> for RecordCounter<T> {
     }
 
     /// Resets counter to initial values.
-    fn reset(&mut self) -> () {
+    fn reset(&mut self) {
         self.record = Vec::new();
         self.counter = T::zero()
     }
 
     /// Updates counter with new value.
-    fn update(&mut self, n: T) -> () {
+    fn update(&mut self, n: T) {
         self.record.push(n);
         self.counter += T::one()
     }

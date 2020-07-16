@@ -39,13 +39,13 @@ impl<T: AddAssign + Num + ToPrimitive> Counter<T> for AggregateCounter<T> {
     }
 
     /// Resets the counter to its initial value.
-    fn reset(&mut self) -> () {
+    fn reset(&mut self) {
         self.total = T::zero();
         self.counter = T::zero()
     }
 
     /// Updates the counter by some value.
-    fn update(&mut self, n: T) -> () {
+    fn update(&mut self, n: T) {
         self.total += n;
         self.counter += T::one()
     }

@@ -1,6 +1,5 @@
 use std::fs::File;
 use std::io::Write;
-use std::ops::AddAssign;
 
 use rand_distr::uniform::Uniform;
 
@@ -18,13 +17,13 @@ pub fn multiple_runs(
     for _ in 0..runs {
         game.run(iterations);
         wins = wins
-            .into_iter()
-            .zip(game.wins().into_iter())
+            .iter()
+            .zip(game.wins().iter())
             .map(|(w, &gw)| w + gw)
             .collect();
         rewards = rewards
-            .into_iter()
-            .zip(game.rewards().into_iter())
+            .iter()
+            .zip(game.rewards().iter())
             .map(|(r, &gr)| r + gr)
             .collect();
         let q_new = random_init(rand_start, game.arms());

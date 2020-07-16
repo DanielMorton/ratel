@@ -1,6 +1,3 @@
-use std::fs::File;
-use std::io::Write;
-
 use clap::{ArgMatches, value_t};
 use itertools::Itertools;
 use rand_distr::uniform::Uniform;
@@ -12,7 +9,7 @@ use super::{
 };
 
 pub fn pool_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMatches) {
-    let reward_vec: Vec<f64> = (1..=99).into_iter().map(|x| f64::from(x) / 100.0).collect();
+    let reward_vec: Vec<f64> = (1..=99).map(|x| f64::from(x) / 100.0).collect();
     let rand_start = Uniform::new(agent_start - 1e-7, agent_start + 1e-7);
     let pair_vec: Vec<Vec<f64>> = reward_vec
         .iter()
@@ -38,7 +35,7 @@ fn pair_bernoulli(
     rand_start: &Uniform<f64>,
     arg: &ArgMatches,
 ) {
-    let mut q_init = random_init(rand_start, pair.len());
+    let q_init = random_init(rand_start, pair.len());
     let mut stepper = HarmonicStepper::new(1, pair.len());
     let ones = vec![1; pair.len()];
     let bandit = BinomialBandit::new(&ones, &pair);
@@ -71,7 +68,7 @@ fn pair_bernoulli(
     } else {
         (
             Box::new(GreedyAgent::new(q_init, &mut stepper)),
-            format!("bad_file.csv"),
+            String::from("bad_file.csv"),
         )
     };
 

@@ -51,7 +51,7 @@ impl<'a, T: ToPrimitive> Agent<T> for OptimisticAgent<'a, T> {
     }
 
     /// Update the Agent's totals and estimate of a Bandit arm based on a given reward.
-    fn step(&mut self, arm: usize, reward: T) -> () {
+    fn step(&mut self, arm: usize, reward: T) {
         self.q_star[arm] += self.update(arm, reward);
         self.arm_total[arm] += 1.0;
         self.total += 1.0

@@ -14,17 +14,17 @@ impl ConstantStepper {
     }
 
     /// Updates the step size.
-    fn update(&mut self, step_size: f64) -> () {
+    fn update(&mut self, step_size: f64) {
         self.step_size = step_size
     }
 }
 
 impl Stepper for ConstantStepper {
     /// Resets the stepper. Has no effect on ConstantStepper.
-    fn reset(&mut self) -> () {}
+    fn reset(&mut self) {}
 
     /// Return the current step size. Used for apply update rule.
-    fn step(&mut self, arm: usize) -> f64 {
+    fn step(&mut self, _arm: usize) -> f64 {
         self.step_size
     }
 }

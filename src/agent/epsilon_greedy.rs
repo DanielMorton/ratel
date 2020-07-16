@@ -55,7 +55,7 @@ impl<'a, T: ToPrimitive> Agent<T> for EpsilonGreedyAgent<'a, T> {
     }
 
     /// Update the Agent's estimate of a Bandit arm based on a given reward.
-    fn step(&mut self, arm: usize, reward: T) -> () {
+    fn step(&mut self, arm: usize, reward: T) {
         self.q_star[arm] += self.update(arm, reward)
     }
 

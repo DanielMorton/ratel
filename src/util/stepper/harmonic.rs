@@ -29,7 +29,7 @@ impl HarmonicStepper {
 
 impl Stepper for HarmonicStepper {
     /// Resets all step sizes to initial value.
-    fn reset(&mut self) -> () {
+    fn reset(&mut self) {
         self.step_size = vec![self.warm_up; self.step_size.len()]
     }
 

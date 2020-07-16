@@ -6,8 +6,8 @@ pub trait Counter<T: Num> {
     fn counter(&self) -> &T;
 
     /// Resets the counter to its initial values.
-    fn reset(&mut self) -> ();
+    fn reset(&mut self);
 
     /// Updates the counter with a new value.
-    fn update(&mut self, n: T) -> ();
+    fn update(&mut self, n: T);
 }

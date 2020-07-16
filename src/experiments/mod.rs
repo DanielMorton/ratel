@@ -16,7 +16,6 @@ mod sequential_bernoulli;
 
 fn random_init(rand_start: &Uniform<f64>, len: usize) -> Vec<f64> {
     (1..=len)
-        .into_iter()
         .map(|_| rand_start.sample(&mut thread_rng()))
         .collect()
 }

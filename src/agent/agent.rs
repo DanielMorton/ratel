@@ -21,10 +21,10 @@ pub trait Agent<T: ToPrimitive> {
     fn q_star(&self) -> &Vec<f64>;
 
     /// Reset the Agent's history and give it a new initial guess of the Bandit's arm values.
-    fn reset(&mut self, q_init: Vec<f64>) -> ();
+    fn reset(&mut self, q_init: Vec<f64>);
 
     /// Update the Agent's estimate of a Bandit arm based on a given reward.
-    fn step(&mut self, arm: usize, reward: T) -> ();
+    fn step(&mut self, arm: usize, reward: T);
 
     /// Calculate the update of the Agent's guess of a Bandit arm based on a given reward.
     fn update(&mut self, arm: usize, reward: T) -> f64 {

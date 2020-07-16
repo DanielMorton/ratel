@@ -71,7 +71,6 @@ fn main() {
     {
         let start = Instant::now();
         (1..=10)
-            .into_iter()
             .map(|x| f64::from(x) / 10.0)
             .for_each(|s| pool_bernoulli(runs, iterations, s, &matches));
         print_hms(start);
@@ -81,7 +80,6 @@ fn main() {
 fn run_bernoulli(runs: u32, iterations: u32, arg: &ArgMatches) {
     let mut pool = Pool::new(12);
     let vec: Vec<f64> = (1..=100)
-        .into_iter()
         .map(|x| f64::from(x) / 100.0)
         .collect();
     let start = Instant::now();

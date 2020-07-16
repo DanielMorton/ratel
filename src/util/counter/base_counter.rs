@@ -17,7 +17,7 @@ impl<T: Num + AddAssign> BaseCounter<T> {
     }
 
     /// Increments the base counter by 1.
-    fn increment(&mut self) -> () {
+    fn increment(&mut self) {
         self.counter += T::one();
     }
 }
@@ -29,12 +29,12 @@ impl<T: Num + AddAssign> Counter<T> for BaseCounter<T> {
     }
 
     /// Resets the counter to its initial value.
-    fn reset(&mut self) -> () {
+    fn reset(&mut self) {
         self.counter = T::zero()
     }
 
     /// Updates the counter by some value.
-    fn update(&mut self, n: T) -> () {
+    fn update(&mut self, n: T) {
         self.counter += n
     }
 }
