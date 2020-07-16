@@ -12,12 +12,12 @@ extern crate lazy_static;
 
 pub use agent::{Agent, EpsilonGreedyAgent, GreedyAgent, OptimisticAgent};
 pub use bandit::{Bandit, BinomialBandit, GaussianBandit};
+pub use experiments::{pool_bernoulli, sequential_bernoulli};
 pub use game::Game;
-pub use run::{pool_bernoulli, sequential_bernoulli};
-pub use util::{print_hms, Counter, HarmonicStepper, RecordCounter, Stepper};
+pub use util::{Counter, HarmonicStepper, print_hms, RecordCounter, Stepper};
 
 mod agent;
 mod bandit;
 mod game;
-mod run;
+mod experiments;
 mod util;

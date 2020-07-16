@@ -12,6 +12,9 @@ pub struct GaussianBandit<'a> {
     /// Standard deviations of the arms.
     stds: &'a Vec<f64>,
 
+    /// The bandit arm with highest reward.
+    best_arm: usize,
+
     /// Distributions of the arms.
     distributions: Vec<Normal<f64>>,
 }
@@ -30,6 +33,7 @@ impl<'a> GaussianBandit<'a> {
         GaussianBandit {
             means,
             stds,
+            best_arm: means.arg_max(),
             distributions: dist,
         }
     }
@@ -38,6 +42,9 @@ impl<'a> GaussianBandit<'a> {
 impl<'a> Bandit<f64> for GaussianBandit<'a> {
     ///Returns the number of arms on the bandit.
     fn arms(&self) -> usize { self.means.len() }
+
+    ///Returns the arm with highest average reward.
+    fn best_arm(&self) -> usize { self.best_arm }
 
     /// The expected return of each arm.
     fn mean(&self, arm: usize) -> f64 {

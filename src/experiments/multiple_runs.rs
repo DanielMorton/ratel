@@ -4,7 +4,7 @@ use std::ops::AddAssign;
 
 use rand_distr::uniform::Uniform;
 
-use super::{random_init, Game};
+use super::{Game, random_init};
 
 pub fn multiple_runs(
     game: &mut Game<u32>,

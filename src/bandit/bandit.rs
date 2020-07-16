@@ -8,13 +8,11 @@ pub trait Bandit<T: ToPrimitive> {
     fn arms(&self) -> usize;
 
     /// The arm with the highest average reward.
-    fn best_arm(&self) -> usize {
-        self.means().arg_max()
-    }
+    fn best_arm(&self) -> usize;
 
     /// The maximum average reward of all the arms.
     fn max_reward(&self) -> f64 {
-        self.means().val_max()
+        self.mean(self.best_arm())
     }
 
     /// The average reward of a given arm.

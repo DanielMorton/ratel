@@ -10,8 +10,6 @@ pub struct Game<'a, T: AddAssign + Num + ToPrimitive> {
     agent: &'a mut dyn Agent<T>,
     ///Bandit used by agent.
     bandit: &'a dyn Bandit<T>,
-    /// Bandit arm with highest average reward.
-    best_arm: usize,
     /// Records wins and losses from each arm pull. Win means pulling the best arm.
     wins: RecordCounter<u32>,
     /// Records rewards from each arm pull.
@@ -25,7 +23,6 @@ impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
         Game {
             agent,
             bandit,
-            best_arm: bandit.best_arm(),
             wins: RecordCounter::new(),
             rewards: RecordCounter::new(),
         }
@@ -39,7 +36,7 @@ impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
     /// Agent chooses an arm to pull and updates based on reward.
     fn pull_arm(&mut self) -> () {
         let current_action = self.agent.action();
-        self.wins.update((current_action == self.best_arm) as u32);
+        self.wins.update((current_action == self.bandit.best_arm()) as u32);
         let reward = self.bandit.reward(current_action);
         self.rewards.update(reward);
         self.agent.step(current_action, reward);
