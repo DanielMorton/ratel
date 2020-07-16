@@ -4,12 +4,16 @@ use num_traits::{Num, ToPrimitive};
 
 use super::Counter;
 
+/// Counter for cases where individual records must be maintained.
 pub struct RecordCounter<T: ToPrimitive> {
+    /// Vector of records passed to counter
     record: Vec<T>,
+    /// Count of all elements passed to counter.
     counter: T,
 }
 
 impl<T: Num + ToPrimitive> RecordCounter<T> {
+    /// Initializes counter to zero and record to empty
     pub fn new() -> RecordCounter<T> {
         RecordCounter {
             record: Vec::new(),
@@ -17,21 +21,25 @@ impl<T: Num + ToPrimitive> RecordCounter<T> {
         }
     }
 
+    /// Returns the current vector of records.
     pub fn record(&self) -> &Vec<T> {
         &self.record
     }
 }
 
 impl<T: AddAssign + Num + ToPrimitive> Counter<T> for RecordCounter<T> {
+    /// Returns the current value of the counter.
     fn counter(&self) -> &T {
         &self.counter
     }
 
+    /// Resets counter to initial values.
     fn reset(&mut self) -> () {
         self.record = Vec::new();
         self.counter = T::zero()
     }
 
+    /// Updates counter with new value.
     fn update(&mut self, n: T) -> () {
         self.record.push(n);
         self.counter += T::one()
@@ -40,8 +48,8 @@ impl<T: AddAssign + Num + ToPrimitive> Counter<T> for RecordCounter<T> {
 
 #[cfg(test)]
 mod tests {
-    use super::super::Counter;
     use super::RecordCounter;
+    use super::super::Counter;
 
     lazy_static! {
         static ref NUMS_VEC: Vec<i32> = vec![45, 5, 52, 93, 51, 90];

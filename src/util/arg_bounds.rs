@@ -1,14 +1,20 @@
 use std::cmp::PartialOrd;
 
+/// Trait containing helper functions for min and max calculations on vectors.
 pub trait ArgBounds<N: PartialOrd> {
+    /// Returns the index of the first item with maximum value.
     fn arg_max(&self) -> usize;
+    /// Returns the index of the first item with minimum value.
     fn arg_min(&self) -> usize;
 
+    /// Returns the maximum value of the vector.
     fn val_max(&self) -> N;
+    /// Returns the minimum value of the vector.
     fn val_min(&self) -> N;
 }
 
 impl<N: PartialOrd + Copy> ArgBounds<N> for Vec<N> {
+    /// Returns the index of the first item with maximum value.
     fn arg_max(&self) -> usize {
         self.iter()
             .enumerate()
@@ -17,6 +23,7 @@ impl<N: PartialOrd + Copy> ArgBounds<N> for Vec<N> {
             .0
     }
 
+    /// Returns the index of the first item with minimum value.
     fn arg_min(&self) -> usize {
         self.iter()
             .enumerate()
@@ -25,6 +32,7 @@ impl<N: PartialOrd + Copy> ArgBounds<N> for Vec<N> {
             .0
     }
 
+    /// Returns the maximum value of the vector.
     fn val_max(&self) -> N {
         self.iter()
             .max_by(|&a, &b| a.partial_cmp(b).unwrap())
@@ -32,6 +40,7 @@ impl<N: PartialOrd + Copy> ArgBounds<N> for Vec<N> {
             .unwrap()
     }
 
+    /// Returns the minimum value of the vector.
     fn val_min(&self) -> N {
         self.iter()
             .min_by(|&a, &b| a.partial_cmp(b).unwrap())

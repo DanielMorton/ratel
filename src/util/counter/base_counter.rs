@@ -23,14 +23,17 @@ impl<T: Num + AddAssign> BaseCounter<T> {
 }
 
 impl<T: Num + AddAssign> Counter<T> for BaseCounter<T> {
+    /// Returns the current value of the counter.
     fn counter(&self) -> &T {
         &self.counter
     }
 
+    /// Resets the counter to its initial value.
     fn reset(&mut self) -> () {
         self.counter = T::zero()
     }
 
+    /// Updates the counter by some value.
     fn update(&mut self, n: T) -> () {
         self.counter += n
     }

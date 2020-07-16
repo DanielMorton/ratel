@@ -4,17 +4,21 @@ use num_traits::{Num, ToPrimitive};
 
 use super::Counter;
 
-/// A counter to record aggregate values
+/// A counter to record aggregate totals and averages.
 struct AggregateCounter<T: ToPrimitive> {
+    /// Sum of all elements passed to counter.
     total: T,
+    /// Count of all elements passed to counter.
     counter: T,
 }
 
 impl<T: Num + ToPrimitive> AggregateCounter<T> {
+    /// Computes average of values passed to counter.
     fn average(&self) -> f64 {
         self.total.to_f64().unwrap() / self.counter.to_f64().unwrap()
     }
 
+    /// Initializes counter to zero.
     fn new() -> AggregateCounter<T> {
         AggregateCounter {
             total: T::zero(),
@@ -22,21 +26,25 @@ impl<T: Num + ToPrimitive> AggregateCounter<T> {
         }
     }
 
+    /// Returns sum of all values passed to counter.
     fn total(&self) -> &T {
         &self.total
     }
 }
 
 impl<T: AddAssign + Num + ToPrimitive> Counter<T> for AggregateCounter<T> {
+    /// Returns the current value of the counter.
     fn counter(&self) -> &T {
         &self.counter
     }
 
+    /// Resets the counter to its initial value.
     fn reset(&mut self) -> () {
         self.total = T::zero();
         self.counter = T::zero()
     }
 
+    /// Updates the counter by some value.
     fn update(&mut self, n: T) -> () {
         self.total += n;
         self.counter += T::one()
