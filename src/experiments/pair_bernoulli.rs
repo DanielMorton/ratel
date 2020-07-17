@@ -1,3 +1,7 @@
+use std::fs::File;
+use std::fs::OpenOptions;
+use std::io::Write;
+
 use clap::{ArgMatches, value_t};
 use itertools::Itertools;
 use rand_distr::uniform::Uniform;
@@ -11,6 +15,28 @@ use super::{
 pub fn pool_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMatches) {
     let reward_vec: Vec<f64> = (1..=99).map(|x| f64::from(x) / 100.0).collect();
     let rand_start = Uniform::new(agent_start - 1e-7, agent_start + 1e-7);
+    let file_name = if arg.is_present("pair_greedy") {
+        String::from("results2/pair/pair_greedy.csv")
+    } else if arg.is_present("pair_epsilon") {
+        let epsilon = value_t!(arg.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
+        format!(
+            "results2/pair/epsilon_e{}.csv",
+            epsilon
+        )
+    } else if arg.is_present("pair_optimistic") {
+        let c = value_t!(arg.value_of("pair_optimistic"), f64).unwrap_or_else(|e| e.exit());
+        format!(
+            "results2/pair/optimistic_c{}.csv",
+            c
+        )
+    } else {
+        String::from("bad_file.csv")
+    };
+    let mut file = File::create(&file_name).unwrap();
+    let first_line = "left, right, iteration, wins, rewards\n";
+    file.write_all(first_line.as_bytes()).unwrap();
+    file.sync_all();
+
     let pair_vec: Vec<Vec<f64>> = reward_vec
         .iter()
         .cartesian_product(&reward_vec)
@@ -21,7 +47,7 @@ pub fn pool_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMat
     pool.scoped(|scope| {
         pair_vec.into_iter().for_each(|pair| {
             scope.execute(move || {
-                pair_bernoulli(runs, iterations, agent_start, &pair, &rand_start, arg);
+                pair_bernoulli(runs, iterations, &pair, &rand_start, arg);
             })
         })
     })
@@ -30,7 +56,6 @@ pub fn pool_bernoulli(runs: u32, iterations: u32, agent_start: f64, arg: &ArgMat
 fn pair_bernoulli(
     runs: u32,
     iterations: u32,
-    agent_start: f64,
     pair: &Vec<f64>,
     rand_start: &Uniform<f64>,
     arg: &ArgMatches,
@@ -39,39 +64,37 @@ fn pair_bernoulli(
     let mut stepper = HarmonicStepper::new(1, pair.len());
     let ones = vec![1; pair.len()];
     let bandit = BinomialBandit::new(&ones, &pair);
-    let (mut agent, file_name): (Box<dyn Agent<u32>>, String) = if arg.is_present("pair_greedy") {
-        (
-            Box::new(GreedyAgent::new(q_init, &mut stepper)),
-            format!(
-                "results/pair/pair_a{}_{}_{}.csv",
-                agent_start, pair[0], pair[1]
-            ),
-        )
+    let mut agent: Box<dyn Agent<u32>> = if arg.is_present("pair_greedy") {
+        Box::new(GreedyAgent::new(q_init, &mut stepper))
     } else if arg.is_present("pair_epsilon") {
         let epsilon = value_t!(arg.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
-        (
-            Box::new(EpsilonGreedyAgent::new(q_init, &mut stepper, epsilon)),
-            format!(
-                "results2/pair/epsilon_e{}_a{}_{}_{}.csv",
-                epsilon, agent_start, pair[0], pair[1]
-            ),
-        )
+        Box::new(EpsilonGreedyAgent::new(q_init, &mut stepper, epsilon))
     } else if arg.is_present("pair_optimistic") {
         let c = value_t!(arg.value_of("pair_optimistic"), f64).unwrap_or_else(|e| e.exit());
-        (
-            Box::new(OptimisticAgent::new(q_init, c, &mut stepper)),
-            format!(
-                "results/pair/optimistic_c{}_a{}_{}_{}.csv",
-                c, agent_start, pair[0], pair[1]
-            ),
-        )
+        Box::new(OptimisticAgent::new(q_init, c, &mut stepper))
     } else {
-        (
-            Box::new(GreedyAgent::new(q_init, &mut stepper)),
-            String::from("bad_file.csv"),
-        )
+        Box::new(GreedyAgent::new(q_init, &mut stepper))
     };
 
     let mut game = Game::new(&mut *agent, &bandit);
-    multiple_runs(&mut game, runs, iterations, rand_start, file_name)
+
+    let file_name = if arg.is_present("pair_greedy") {
+        String::from("results2/pair/pair_greedy.csv")
+    } else if arg.is_present("pair_epsilon") {
+        let epsilon = value_t!(arg.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
+        format!(
+            "results2/pair/epsilon_e{}.csv",
+            epsilon
+        )
+    } else if arg.is_present("pair_optimistic") {
+        let c = value_t!(arg.value_of("pair_optimistic"), f64).unwrap_or_else(|e| e.exit());
+        format!(
+            "results2/pair/optimistic_c{}.csv",
+            c
+        )
+    } else {
+        String::from("bad_file.csv")
+    };
+    let mut file = File::create(file_name).unwrap();
+    multiple_runs(&mut game, pair, runs, iterations, rand_start, &mut file)
 }

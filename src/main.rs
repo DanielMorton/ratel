@@ -3,7 +3,7 @@ use std::time::Instant;
 use clap::{App, Arg, ArgMatches, value_t};
 use scoped_threadpool::Pool;
 
-use ratel::{pool_bernoulli, print_hms, sequential_bernoulli};
+use ratel::{pool_bernoulli, print_hms};
 
 fn main() {
     let matches = App::new("Ratel")
@@ -64,7 +64,7 @@ fn main() {
     let runs = value_t!(matches.value_of("runs"), u32).unwrap_or_else(|e| e.exit());
     let iterations = value_t!(matches.value_of("iterations"), u32).unwrap_or_else(|e| e.exit());
     if matches.is_present("greedy") || matches.is_present("epsilon_greedy") {
-        run_bernoulli(runs, iterations, &matches)
+        //    run_bernoulli(runs, iterations, &matches)
     } else if matches.is_present("pair_greedy")
         || matches.is_present("pair_epsilon")
         || matches.is_present("pair_optimistic")
@@ -77,16 +77,16 @@ fn main() {
     }
 }
 
-fn run_bernoulli(runs: u32, iterations: u32, arg: &ArgMatches) {
-    let mut pool = Pool::new(12);
-    let vec: Vec<f64> = (1..=100)
-        .map(|x| f64::from(x) / 100.0)
-        .collect();
-    let start = Instant::now();
-    pool.scoped(|scope| {
-        for x in vec {
-            scope.execute(move || sequential_bernoulli(runs, iterations, x, arg))
-        }
-    });
-    print_hms(start);
-}
+// fn run_bernoulli(runs: u32, iterations: u32, arg: &ArgMatches) {
+//     let mut pool = Pool::new(12);
+//     let vec: Vec<f64> = (1..=100)
+//         .map(|x| f64::from(x) / 100.0)
+//         .collect();
+//     let start = Instant::now();
+//     pool.scoped(|scope| {
+//         for x in vec {
+//             scope.execute(move || sequential_bernoulli(runs, iterations, x, arg))
+//         }
+//     });
+//     print_hms(start);
+// }
