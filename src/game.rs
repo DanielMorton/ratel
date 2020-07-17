@@ -36,7 +36,8 @@ impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
     /// Agent chooses an arm to pull and updates based on reward.
     fn pull_arm(&mut self) {
         let current_action = self.agent.action();
-        self.wins.update((current_action == self.bandit.best_arm()) as u32);
+        self.wins
+            .update((current_action == self.bandit.best_arm()) as u32);
         let reward = self.bandit.reward(current_action);
         self.rewards.update(reward);
         self.agent.step(current_action, reward);

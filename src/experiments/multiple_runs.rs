@@ -7,7 +7,7 @@ use super::{Game, random_init};
 
 pub fn multiple_runs(
     game: &mut Game<u32>,
-    pair: &Vec<f64>,
+    pair: &[f64],
     start: &f64,
     runs: u32,
     iterations: u32,
@@ -36,8 +36,7 @@ pub fn multiple_runs(
         .map(|&w| f64::from(w) / f64::from(runs))
         .zip(rewards.iter().map(|&r| f64::from(r) / f64::from(runs)))
         .enumerate()
-        .map(|(i, (w, r))|
-            format!("{},{},{},{},{},{}", pair[0], pair[1], start, i, w, r))
+        .map(|(i, (w, r))| format!("{},{},{},{},{},{}", pair[0], pair[1], start, i, w, r))
         .fold(String::from(""), |s, s0| [s, s0].join("\n"));
 
     file.write_all(output.as_bytes()).unwrap();

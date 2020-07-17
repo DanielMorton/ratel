@@ -34,14 +34,16 @@ impl<N: PartialOrd + Copy> ArgBounds<N> for Vec<N> {
 
     /// Returns the maximum value of the vector.
     fn val_max(&self) -> N {
-        *self.iter()
+        *self
+            .iter()
             .max_by(|&a, &b| a.partial_cmp(b).unwrap())
             .unwrap()
     }
 
     /// Returns the minimum value of the vector.
     fn val_min(&self) -> N {
-        *self.iter()
+        *self
+            .iter()
             .min_by(|&a, &b| a.partial_cmp(b).unwrap())
             .unwrap()
     }

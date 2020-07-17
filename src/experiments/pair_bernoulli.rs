@@ -17,25 +17,16 @@ fn make_file_name(arg: &ArgMatches) -> String {
         String::from("results2/pair/greedy.csv")
     } else if arg.is_present("pair_epsilon") {
         let epsilon = value_t!(arg.value_of("pair_epsilon"), f64).unwrap_or_else(|e| e.exit());
-        format!(
-            "results2/pair/epsilon_e{}.csv",
-            epsilon
-        )
+        format!("results2/pair/epsilon_e{}.csv", epsilon)
     } else if arg.is_present("pair_optimistic") {
         let c = value_t!(arg.value_of("pair_optimistic"), f64).unwrap_or_else(|e| e.exit());
-        format!(
-            "results2/pair/optimistic_c{}.csv",
-            c
-        )
+        format!("results2/pair/optimistic_c{}.csv", c)
     } else {
         String::from("bad_file.csv")
     }
 }
 
-pub fn pool_bernoulli(runs: u32,
-                      iterations: u32,
-                      agent_start: &[f64],
-                      arg: &ArgMatches) {
+pub fn pool_bernoulli(runs: u32, iterations: u32, agent_start: &[f64], arg: &ArgMatches) {
     let file_name = make_file_name(arg);
     let mut file = File::create(&file_name).unwrap();
     let first_line = "left,right,start,iteration,wins,rewards";
@@ -94,8 +85,14 @@ fn pair_bernoulli(
     let mut game = Game::new(&mut *agent, &bandit);
 
     let file_name = make_file_name(arg);
-    let mut file = OpenOptions::new()
-        .append(true)
-        .open(file_name).unwrap();
-    multiple_runs(&mut game, &pair, start, runs, iterations, &rand_start, &mut file)
+    let mut file = OpenOptions::new().append(true).open(file_name).unwrap();
+    multiple_runs(
+        &mut game,
+        &pair,
+        start,
+        runs,
+        iterations,
+        &rand_start,
+        &mut file,
+    )
 }

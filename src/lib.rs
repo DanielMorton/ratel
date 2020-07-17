@@ -18,6 +18,6 @@ pub use util::{Counter, HarmonicStepper, print_hms, RecordCounter, Stepper};
 
 mod agent;
 mod bandit;
-mod game;
 mod experiments;
+mod game;
 mod util;

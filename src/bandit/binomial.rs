@@ -32,9 +32,12 @@ impl<'a> BinomialBandit<'a> {
             .zip(probs)
             .map(|(&n, &p)| Binomial::new(u64::from(n), p).unwrap())
             .collect();
-        let best_arm = nums.iter()
+        let best_arm = nums
+            .iter()
             .zip(probs)
-            .map(|(&n, &p)| f64::from(n) * p).collect::<Vec<f64>>().arg_max();
+            .map(|(&n, &p)| f64::from(n) * p)
+            .collect::<Vec<f64>>()
+            .arg_max();
         BinomialBandit {
             nums,
             probs,
@@ -46,10 +49,14 @@ impl<'a> BinomialBandit<'a> {
 
 impl<'a> Bandit<u32> for BinomialBandit<'a> {
     ///Returns the number of arms on the bandit.
-    fn arms(&self) -> usize { self.nums.len() }
+    fn arms(&self) -> usize {
+        self.nums.len()
+    }
 
     ///Returns the arm with highest average reward.
-    fn best_arm(&self) -> usize { self.best_arm }
+    fn best_arm(&self) -> usize {
+        self.best_arm
+    }
 
     /// Computes the expected return of each arm.
     fn mean(&self, arm: usize) -> f64 {

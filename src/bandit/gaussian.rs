@@ -41,10 +41,14 @@ impl<'a> GaussianBandit<'a> {
 
 impl<'a> Bandit<f64> for GaussianBandit<'a> {
     ///Returns the number of arms on the bandit.
-    fn arms(&self) -> usize { self.means.len() }
+    fn arms(&self) -> usize {
+        self.means.len()
+    }
 
     ///Returns the arm with highest average reward.
-    fn best_arm(&self) -> usize { self.best_arm }
+    fn best_arm(&self) -> usize {
+        self.best_arm
+    }
 
     /// The expected return of each arm.
     fn mean(&self, arm: usize) -> f64 {
@@ -57,7 +61,9 @@ impl<'a> Bandit<f64> for GaussianBandit<'a> {
     }
 
     /// The standard deviations of each arm.
-    fn std(&self, arm: usize) -> f64 { self.stds[arm] }
+    fn std(&self, arm: usize) -> f64 {
+        self.stds[arm]
+    }
 }
 
 #[cfg(test)]
