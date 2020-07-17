@@ -70,9 +70,8 @@ fn main() {
         || matches.is_present("pair_optimistic")
     {
         let start = Instant::now();
-        (1..=10)
-            .map(|x| f64::from(x) / 10.0)
-            .for_each(|s| pool_bernoulli(runs, iterations, s, &matches));
+        let agent_start: Vec<f64> = (1..=10).map(|x| f64::from(x) / 10.0).collect();
+        pool_bernoulli(runs, iterations, &agent_start, &matches);
         print_hms(start);
     }
 }
