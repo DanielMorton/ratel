@@ -1,0 +1,6 @@
+.idea/*
+*ipynb*
+results/*
+Cargo.lock
+.DS_Store
+*.iml
