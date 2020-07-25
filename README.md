@@ -1,6 +1,8 @@
 # Ratel
 [![Build Status](https://travis-ci.org/DanielMorton/ratel.svg?branch=master)](https://travis-ci.org/DanielMorton/ratel)
 [![CircleCI](https://circleci.com/gh/DanielMorton/ratel.svg?style=svg)](https://circleci.com/gh/DanielMorton/ratel)
+[![](http://meritbadge.herokuapp.com/ratel_bandit)](https://crates.io/crates/ratel_bandit)
+[![minimum rustc 1.32](https://img.shields.io/badge/rustc-1.32+-blue.svg)](https://rust-lang.github.io/rfcs/2495-min-rust-version.html)
 
 Rust Implementation of a Muti-armed Bandit Simulator
 
