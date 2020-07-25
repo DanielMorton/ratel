@@ -12,6 +12,7 @@ pub struct GaussianBandit<'a> {
     /// Standard deviations of the arms.
     stds: &'a Vec<f64>,
 
+    /// Number of arms on the bandit.
     arms: usize,
 
     /// The bandit arm with highest reward.

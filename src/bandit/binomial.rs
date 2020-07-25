@@ -12,6 +12,7 @@ pub struct BinomialBandit<'a> {
     /// Vector of experiment success probabilities.
     probs: &'a Vec<f64>,
 
+    /// Number of arms on the bandit.
     arms: usize,
 
     /// The bandit arm with highest reward.
@@ -89,7 +90,6 @@ mod tests {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
         let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
-        print!("Run Test");
         assert_eq!(binom.arms(), 5)
     }
 
