@@ -1,8 +1,5 @@
 language: rust
 
-env:
-  CODECOV_TOKEN=26857aee-2ccc-448c-bf70-fcb35af6b3b5
-
 matrix:
   include:
     - rust: stable
