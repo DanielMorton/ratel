@@ -5,6 +5,10 @@ authors = ["DanielMorton <dacmorton@gmail.com>"]
 description = "Rust Implementation of a Muti-armed Bandit Simulator"
 repository = "https://github.com/DanielMorton/ratel"
 edition = "2018"
+exclude = [
+    ".circleci/config.yml",
+    ".travis.yml",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
