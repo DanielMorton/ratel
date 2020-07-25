@@ -1,5 +1,5 @@
 [package]
-name = "ratel"
+name = "ratel_bandit"
 version = "0.1.0"
 authors = ["DanielMorton <dacmorton@gmail.com>"]
 description = "Rust Implementation of a Muti-armed Bandit Simulator"
