@@ -20,7 +20,7 @@ pub struct ExponentialBandit<'a> {
 }
 
 impl<'a> ExponentialBandit<'a> {
-    /// Initializes a new Bandit where each arm distributes rewards according to a binomial
+    /// Initializes a new Bandit where each arm distributes rewards according to an exponential
     /// distribution.
     pub fn new(lambdas: &'a Vec<f64>) -> ExponentialBandit<'a> {
         assert!(lambdas.val_min() > 0.0);
@@ -100,11 +100,10 @@ mod tests {
     fn test_means() {
         let lambdas_vec: Vec<f64> = vec![6.1, 0.6, 5.4, 9.1, 3.5];
         let exp: ExponentialBandit = ExponentialBandit::new(&lambdas_vec);
-        exp
-            .means()
+        exp.means()
             .iter()
             .zip(vec![6.1, 0.6, 5.4, 9.1, 3.5])
-            .for_each(|(m1, m2)| assert_approx_eq!(1.0/m1, m2))
+            .for_each(|(m1, m2)| assert_approx_eq!(1.0 / m1, m2))
     }
 
     #[test]
@@ -134,10 +133,9 @@ mod tests {
     fn test_stds() {
         let lambdas_vec: Vec<f64> = vec![6.1, 0.6, 5.4, 9.1, 3.5];
         let exp: ExponentialBandit = ExponentialBandit::new(&lambdas_vec);
-        exp
-            .stds()
+        exp.stds()
             .iter()
             .zip(vec![6.1, 0.6, 5.4, 9.1, 3.5])
-            .for_each(|(s1, s2)| assert_approx_eq!(1.0/s1, s2))
+            .for_each(|(s1, s2)| assert_approx_eq!(1.0 / s1, s2))
     }
 }

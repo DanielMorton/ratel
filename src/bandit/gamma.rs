@@ -4,7 +4,7 @@ use rand_distr::Gamma;
 
 use super::{ArgBounds, Bandit};
 
-/// A bandit whose arms distribute rewards according to the exponential distributions.
+/// A bandit whose arms distribute rewards according to the gamma distributions.
 pub struct GammaBandit<'a> {
     /// Vector of distribution shape parameters.
     alphas: &'a Vec<f64>,
@@ -23,7 +23,7 @@ pub struct GammaBandit<'a> {
 }
 
 impl<'a> GammaBandit<'a> {
-    /// Initializes a new Bandit where each arm distributes rewards according to a binomial
+    /// Initializes a new Bandit where each arm distributes rewards according to a gamma
     /// distribution.
     fn new(alphas: &'a Vec<f64>, thetas: &'a Vec<f64>) -> GammaBandit<'a> {
         assert_eq!(alphas.len(), thetas.len());
@@ -37,7 +37,9 @@ impl<'a> GammaBandit<'a> {
         let best_arm = alphas
             .iter()
             .zip(thetas)
-            .map(|(&a, &t)| a * t).collect::<Vec<f64>>().arg_max();
+            .map(|(&a, &t)| a * t)
+            .collect::<Vec<f64>>()
+            .arg_max();
         GammaBandit {
             alphas,
             thetas,
@@ -177,7 +179,11 @@ mod tests {
             .stds()
             .iter()
             .zip(vec![
-                9.1214034, 2.1575449, 4.1742065, 0.68920243, 17.60139199,
+                9.1214034,
+                2.1575449,
+                4.1742065,
+                0.68920243,
+                17.60139199,
             ])
             .for_each(|(s1, s2)| assert_approx_eq!(s1, s2))
     }
