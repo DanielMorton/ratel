@@ -4,13 +4,15 @@ use rand_distr::Binomial;
 
 use super::{ArgBounds, Bandit};
 
-/// A bandit whose arms distribute rewards according to binomial distributions.
+/// A bandit whose arms distribute rewards according to the binomial distributions.
 pub struct BinomialBandit<'a> {
     /// Vector of number of trials of a `yes-no` experiment.
     nums: &'a Vec<u32>,
 
     /// Vector of experiment success probabilities.
     probs: &'a Vec<f64>,
+
+    arms: usize,
 
     /// The bandit arm with highest reward.
     best_arm: usize,
@@ -41,6 +43,7 @@ impl<'a> BinomialBandit<'a> {
         BinomialBandit {
             nums,
             probs,
+            arms: nums.len(),
             best_arm,
             distributions: dist,
         }
@@ -50,7 +53,7 @@ impl<'a> BinomialBandit<'a> {
 impl<'a> Bandit<u32> for BinomialBandit<'a> {
     ///Returns the number of arms on the bandit.
     fn arms(&self) -> usize {
-        self.nums.len()
+        self.arms
     }
 
     ///Returns the arm with highest average reward.

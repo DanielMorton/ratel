@@ -4,13 +4,15 @@ use rand_distr::Normal;
 
 use super::{ArgBounds, Bandit};
 
-/// A bandit whose arms distribute rewards according to Guassian distributions.
+/// A bandit whose arms distribute rewards according to the Gaussian distributions.
 pub struct GaussianBandit<'a> {
     /// Means of the arms.
     means: &'a Vec<f64>,
 
     /// Standard deviations of the arms.
     stds: &'a Vec<f64>,
+
+    arms: usize,
 
     /// The bandit arm with highest reward.
     best_arm: usize,
@@ -33,6 +35,7 @@ impl<'a> GaussianBandit<'a> {
         GaussianBandit {
             means,
             stds,
+            arms: means.len(),
             best_arm: means.arg_max(),
             distributions: dist,
         }
@@ -42,7 +45,7 @@ impl<'a> GaussianBandit<'a> {
 impl<'a> Bandit<f64> for GaussianBandit<'a> {
     ///Returns the number of arms on the bandit.
     fn arms(&self) -> usize {
-        self.means.len()
+        self.arms
     }
 
     ///Returns the arm with highest average reward.
