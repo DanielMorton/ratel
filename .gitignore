@@ -1,9 +1,0 @@
-*.ipynb
-Cargo.lock
-results/*
-.idea/*
-*.iml
-.DS_Store
-.gitignore
-.travis*
-.circleci/*
