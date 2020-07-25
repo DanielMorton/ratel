@@ -46,3 +46,7 @@ Then run
 
 The simulator is designed for maximum flexibility. For inspiration, or to see
 how I constructed experiments, see the develop branch.
+
+## Compatibility
+
+This code is compatible with all versions of Rust from 1.32 to 1.45.
