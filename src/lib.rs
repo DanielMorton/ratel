@@ -11,7 +11,9 @@
 extern crate lazy_static;
 
 pub use agent::{Agent, EpsilonGreedyAgent, GreedyAgent, OptimisticAgent};
-pub use bandit::{Bandit, BinomialBandit, ExponentialBandit, GaussianBandit, LogNormalBandit};
+pub use bandit::{
+    Bandit, BinomialBandit, ExponentialBandit, GammaBandit, GaussianBandit, LogNormalBandit,
+};
 pub use game::Game;
 pub use util::{Counter, HarmonicStepper, print_hms, RecordCounter, Stepper};
 
