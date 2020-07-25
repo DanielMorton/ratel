@@ -1,5 +1,12 @@
 version: 2
 jobs:
+  build45:
+    docker:
+      - image: circleci/rust:1.45
+    steps:
+      - checkout
+      - run: cargo test --all --verbose
+      - run: cargo build
   build44:
     docker:
       - image: circleci/rust:1.44
@@ -95,6 +102,7 @@ workflows:
   version: 2
   rust:
     jobs:
+      - build45
       - build44
       - build43
       - build42
