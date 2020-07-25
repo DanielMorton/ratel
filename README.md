@@ -47,7 +47,7 @@ Then run
 ```cargo run --releas -- ${PARAMETERS}```
 
 The simulator is designed for maximum flexibility. For inspiration, or to see
-how I constructed experiments, see the develop branch.
+how I constructed experiments, see [Ratel-Experiments](https://github.com/DanielMorton/ratel-experiment/tree/master).
 
 ## Compatibility
 
