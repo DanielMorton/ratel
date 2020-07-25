@@ -7,6 +7,7 @@
 //! bandit arm. A Game then consists of an Agent learning about a Bandit by pulling arms according
 //! to its preferred strategy.
 
+#[cfg(test)]
 #[macro_use]
 extern crate lazy_static;
 
