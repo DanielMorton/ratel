@@ -5,3 +5,5 @@ results/*
 *.iml
 .DS_Store
 .gitignore
+.travis*
+.circleci/*
