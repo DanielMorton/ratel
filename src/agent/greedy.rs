@@ -59,7 +59,7 @@ impl<'a, T> GreedyAgent<'a, T> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{HarmonicStepper, Stepper};
+    use crate::HarmonicStepper;
 
     use super::{Agent, GreedyAgent};
 
