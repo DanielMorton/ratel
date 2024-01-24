@@ -46,6 +46,12 @@ impl<T: AddAssign + Num + ToPrimitive> Counter<T> for RecordCounter<T> {
     }
 }
 
+impl<T: Num + ToPrimitive> Default for RecordCounter<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::RecordCounter;
