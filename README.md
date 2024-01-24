@@ -44,7 +44,7 @@ To build the simulator simply run
 To run the simulator, write a ```main``` module with the desired simulation code.
 Then run
 
-```cargo run --releas -- ${PARAMETERS}```
+```cargo run --release -- ${PARAMETERS}```
 
 The simulator is designed for maximum flexibility. For inspiration, or to see
 how I constructed experiments, see [Ratel-Experiments](https://github.com/DanielMorton/ratel-experiment/tree/master).
