@@ -1,6 +1,6 @@
 [package]
 name = "ratel_bandit"
-version = "0.1.2"
+version = "0.2.0"
 authors = ["DanielMorton <dacmorton@gmail.com>"]
 description = "Rust Implementation of a Muti-armed Bandit Simulator"
 license = "MIT OR Apache-2.0"
