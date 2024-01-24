@@ -51,4 +51,4 @@ how I constructed experiments, see [Ratel-Experiments](https://github.com/Daniel
 
 ## Compatibility
 
-This code is compatible with all versions of Rust from 1.32 to 1.45.
+This code is compatible with all versions of Rust from 1.32 to 1.75.
