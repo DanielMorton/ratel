@@ -36,8 +36,8 @@ impl<T: ToPrimitive> Agent<T> for GreedyAgent<T> {
     }
 
     /// Reset the Agent's history and give it a new initial guess of the Bandit's arm values.
-    fn reset(&mut self, q_init: Vec<f64>) {
-        self.q_star = q_init;
+    fn reset(&mut self, q_init: &[f64]) {
+        self.q_star = q_init.to_owned();
         self.stepper.reset()
     }
 
@@ -86,7 +86,7 @@ mod tests {
         let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
         let mut greedy: GreedyAgent<u32> = GreedyAgent::new(Q_INIT.to_vec(), Box::new(stepper));
         let new_q = vec![0.01, 0.86, 0.43, 0.65, 0.66];
-        greedy.reset(new_q.clone());
+        greedy.reset(&new_q);
         assert_eq!(greedy.q_star, new_q)
     }
 }

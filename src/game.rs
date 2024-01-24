@@ -44,7 +44,7 @@ impl<T: AddAssign + Copy + Num + ToPrimitive> Game<T> {
     }
 
     /// Resets Game. Resets Agent with new initial guess and resets counters.
-    pub fn reset(&mut self, q_init: Vec<f64>) {
+    pub fn reset(&mut self, q_init: &[f64]) {
         self.agent.reset(q_init);
         self.rewards.reset();
         self.wins.reset();

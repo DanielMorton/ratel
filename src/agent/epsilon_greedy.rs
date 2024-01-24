@@ -55,8 +55,8 @@ impl<T: ToPrimitive> Agent<T> for EpsilonGreedyAgent<T> {
     }
 
     /// Reset the Agent's history and give it a new initial guess of the Bandit's arm values.
-    fn reset(&mut self, q_init: Vec<f64>) {
-        self.q_star = q_init;
+    fn reset(&mut self, q_init: &[f64]) {
+        self.q_star = q_init.to_owned();
         self.stepper.reset()
     }
 
@@ -136,7 +136,7 @@ mod tests {
         let mut epsilon: EpsilonGreedyAgent<u32> =
             EpsilonGreedyAgent::new(Q_INIT, Box::new(stepper), 0.1);
         let new_q = vec![0.01, 0.86, 0.43, 0.65, 0.66];
-        epsilon.reset(new_q.clone());
+        epsilon.reset(&new_q);
         assert_eq!(epsilon.q_star, new_q)
     }
 }

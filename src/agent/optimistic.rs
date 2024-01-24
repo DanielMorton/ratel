@@ -51,8 +51,8 @@ impl<T: ToPrimitive> Agent<T> for OptimisticAgent<T> {
     }
 
     /// Reset the Agent's history and give it a new initial guess of the Bandit's arm values.
-    fn reset(&mut self, q_init: Vec<f64>) {
-        self.q_star = q_init;
+    fn reset(&mut self, q_init: &[f64]) {
+        self.q_star = q_init.to_owned();
         self.stepper.reset()
     }
 
@@ -129,7 +129,7 @@ mod tests {
         let mut optimistic: OptimisticAgent<u32> =
             OptimisticAgent::new(Q_INIT, c, Box::new(stepper));
         let new_q = vec![0.01, 0.86, 0.43, 0.65, 0.66];
-        optimistic.reset(new_q.clone());
+        optimistic.reset(&new_q);
         assert_eq!(optimistic.q_star, new_q)
     }
 }

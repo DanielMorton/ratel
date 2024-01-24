@@ -14,7 +14,7 @@ pub trait Agent<T: ToPrimitive> {
     fn current_estimate(&self, arm: usize) -> f64;
 
     /// Reset the Agent's history and give it a new initial guess of the Bandit's arm values.
-    fn reset(&mut self, q_init: Vec<f64>);
+    fn reset(&mut self, q_init: &[f64]);
 
     /// Update the Agent's estimate of a Bandit arm based on a given reward.
     fn step(&mut self, arm: usize, reward: T);
