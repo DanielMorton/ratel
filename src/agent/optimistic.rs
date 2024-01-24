@@ -90,46 +90,46 @@ mod tests {
 
     use super::{Agent, OptimisticAgent};
 
-    lazy_static! {
-        static ref Q_INIT: Vec<f64> = vec![0.5, 0.61, 0.7, 0.12, 0.37];
-    }
-
     #[test]
     fn test_new() {
+        let Q_INIT = vec![0.5, 0.61, 0.7, 0.12, 0.37];
         let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
         let c = 2.0;
         let optimistic: OptimisticAgent<u32> =
-            OptimisticAgent::new(Q_INIT.to_vec(), c, Box::new(stepper));
+            OptimisticAgent::new(Q_INIT, c, Box::new(stepper));
         assert_eq!(optimistic.c, c);
         assert_eq!(optimistic.q_star, vec![0.5, 0.61, 0.7, 0.12, 0.37])
     }
 
     #[test]
     fn test_action() {
+        let Q_INIT = vec![0.5, 0.61, 0.7, 0.12, 0.37];
         let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
         let c = 2.0;
         let optimistic: OptimisticAgent<u32> =
-            OptimisticAgent::new(Q_INIT.to_vec(), c, Box::new(stepper));
+            OptimisticAgent::new(Q_INIT, c, Box::new(stepper));
         assert_eq!(optimistic.action(), 2)
     }
 
     #[test]
     fn test_q_star() {
+        let Q_INIT = vec![0.5, 0.61, 0.7, 0.12, 0.37];
         let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
         let c = 2.0;
         let optimistic: OptimisticAgent<u32> =
-            OptimisticAgent::new(Q_INIT.to_vec(), c, Box::new(stepper));
-        assert_eq!(optimistic.q_star(), &vec![0.5, 0.61, 0.7, 0.12, 0.37])
+            OptimisticAgent::new(Q_INIT, c, Box::new(stepper));
+        assert_eq!(optimistic.q_star, vec![0.5, 0.61, 0.7, 0.12, 0.37])
     }
 
     #[test]
     fn test_reset() {
+        let Q_INIT = vec![0.5, 0.61, 0.7, 0.12, 0.37];
         let mut stepper = HarmonicStepper::new(1, Q_INIT.len());
         let c = 2.0;
         let mut optimistic: OptimisticAgent<u32> =
-            OptimisticAgent::new(Q_INIT.to_vec(), c, Box::new(stepper));
+            OptimisticAgent::new(Q_INIT, c, Box::new(stepper));
         let new_q = vec![0.01, 0.86, 0.43, 0.65, 0.66];
         optimistic.reset(new_q.clone());
-        assert_eq!(optimistic.q_star(), &new_q)
+        assert_eq!(optimistic.q_star, new_q)
     }
 }

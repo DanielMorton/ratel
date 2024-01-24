@@ -73,35 +73,35 @@ mod tests {
     #[test]
     fn test_arms() {
         let lambdas_vec: Vec<f64> = vec![6.1, 0.6, 5.4, 9.1, 2.5];
-        let exp: ExponentialBandit = ExponentialBandit::new(&lambdas_vec);
+        let exp: ExponentialBandit = ExponentialBandit::new(lambdas_vec);
         assert_eq!(exp.arms(), 5)
     }
 
     #[test]
     fn test_best_arm() {
         let lambdas_vec: Vec<f64> = vec![6.1, 0.6, 5.4, 9.1, 3.5];
-        let exp: ExponentialBandit = ExponentialBandit::new(&lambdas_vec);
+        let exp: ExponentialBandit = ExponentialBandit::new(lambdas_vec);
         assert_eq!(exp.best_arm(), 1)
     }
 
     #[test]
     fn test_max_reward() {
         let lambdas_vec: Vec<f64> = vec![6.1, 0.6, 5.4, 9.1, 3.5];
-        let exp: ExponentialBandit = ExponentialBandit::new(&lambdas_vec);
+        let exp: ExponentialBandit = ExponentialBandit::new(lambdas_vec);
         assert_approx_eq!(exp.max_reward(), 1.6666667)
     }
 
     #[test]
     fn test_mean() {
         let lambdas_vec: Vec<f64> = vec![6.1, 0.6, 5.4, 9.1, 2.5];
-        let exp: ExponentialBandit = ExponentialBandit::new(&lambdas_vec);
+        let exp: ExponentialBandit = ExponentialBandit::new(lambdas_vec);
         assert_eq!(exp.mean(4), 0.4)
     }
 
     #[test]
     fn test_means() {
         let lambdas_vec: Vec<f64> = vec![6.1, 0.6, 5.4, 9.1, 3.5];
-        let exp: ExponentialBandit = ExponentialBandit::new(&lambdas_vec);
+        let exp: ExponentialBandit = ExponentialBandit::new(lambdas_vec);
         exp.means()
             .iter()
             .zip(vec![6.1, 0.6, 5.4, 9.1, 3.5])
@@ -112,13 +112,13 @@ mod tests {
     #[should_panic]
     fn test_new_neg_lambda() {
         let lambdas_vec: Vec<f64> = vec![6.1, 0.6, -5.4, 9.1, 3.5];
-        ExponentialBandit::new(&lambdas_vec);
+        ExponentialBandit::new(lambdas_vec);
     }
 
     #[test]
     fn test_reward() {
         let lambdas_vec: Vec<f64> = vec![6.1, 0.6, 5.4, 9.1, 3.5];
-        let exp: ExponentialBandit = ExponentialBandit::new(&lambdas_vec);
+        let exp: ExponentialBandit = ExponentialBandit::new(lambdas_vec);
         for _ in 0..1000 {
             exp.reward(2);
         }
@@ -127,14 +127,14 @@ mod tests {
     #[test]
     fn test_std() {
         let lambdas_vec: Vec<f64> = vec![6.1, 0.6, 5.4, 9.1, 3.5];
-        let exp: ExponentialBandit = ExponentialBandit::new(&lambdas_vec);
+        let exp: ExponentialBandit = ExponentialBandit::new(lambdas_vec);
         assert_approx_eq!(exp.std(1), 1.6666667)
     }
 
     #[test]
     fn test_stds() {
         let lambdas_vec: Vec<f64> = vec![6.1, 0.6, 5.4, 9.1, 3.5];
-        let exp: ExponentialBandit = ExponentialBandit::new(&lambdas_vec);
+        let exp: ExponentialBandit = ExponentialBandit::new(lambdas_vec);
         exp.stds()
             .iter()
             .zip(vec![6.1, 0.6, 5.4, 9.1, 3.5])
