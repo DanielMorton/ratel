@@ -5,9 +5,9 @@ use rand_distr::Exp;
 use super::{ArgBounds, Bandit};
 
 /// A bandit whose arms distribute rewards according to the exponential distributions.
-pub struct ExponentialBandit<'a> {
+pub struct ExponentialBandit {
     /// Vector of the inverses of the distribution means.
-    lambdas: &'a Vec<f64>,
+    lambdas: Vec<f64>,
 
     /// Number of arms on the bandit.
     arms: usize,
@@ -19,22 +19,24 @@ pub struct ExponentialBandit<'a> {
     distributions: Vec<Exp<f64>>,
 }
 
-impl<'a> ExponentialBandit<'a> {
+impl ExponentialBandit {
     /// Initializes a new Bandit where each arm distributes rewards according to an exponential
     /// distribution.
-    pub fn new(lambdas: &'a Vec<f64>) -> ExponentialBandit<'a> {
+    pub fn new(lambdas: Vec<f64>) -> ExponentialBandit {
         assert!(lambdas.val_min() > 0.0);
         let dist = lambdas.iter().map(|&l| Exp::new(l).unwrap()).collect();
+        let arms = lambdas.len();
+        let best_arm = lambdas.arg_min();
         ExponentialBandit {
             lambdas,
-            arms: lambdas.len(),
-            best_arm: lambdas.arg_min(),
+            arms,
+            best_arm,
             distributions: dist,
         }
     }
 }
 
-impl<'a> Bandit<f64> for ExponentialBandit<'a> {
+impl Bandit<f64> for ExponentialBandit {
     ///Returns the number of arms on the bandit.
     fn arms(&self) -> usize {
         self.arms

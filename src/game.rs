@@ -5,20 +5,20 @@ use num_traits::{Num, ToPrimitive};
 use super::{Agent, Bandit, Counter, RecordCounter};
 
 ///Structure to make the Agent interact with the Bandit.
-pub struct Game<'a, T: AddAssign + Num + ToPrimitive> {
+pub struct Game<T: AddAssign + Num + ToPrimitive> {
     /// Agent learning about bandit.
-    agent: &'a mut dyn Agent<T>,
+    agent: Box<dyn Agent<T>>,
     ///Bandit used by agent.
-    bandit: &'a dyn Bandit<T>,
+    bandit: Box<dyn Bandit<T>>,
     /// Records wins and losses from each arm pull. Win means pulling the best arm.
     wins: RecordCounter<u32>,
     /// Records rewards from each arm pull.
     rewards: RecordCounter<T>,
 }
 
-impl<'a, T: AddAssign + Copy + Num + ToPrimitive> Game<'a, T> {
+impl<T: AddAssign + Copy + Num + ToPrimitive> Game<T> {
     /// Initializes a Game with an Agent, Bandit, and new counters.
-    pub fn new(agent: &'a mut dyn Agent<T>, bandit: &'a dyn Bandit<T>) -> Game<'a, T> {
+    pub fn new(agent: Box<dyn Agent<T>>, bandit: Box<dyn Bandit<T>>) -> Game<T> {
         assert_eq!(agent.arms(), bandit.arms());
         Game {
             agent,

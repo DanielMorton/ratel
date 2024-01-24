@@ -5,12 +5,12 @@ use rand_distr::Binomial;
 use super::{ArgBounds, Bandit};
 
 /// A bandit whose arms distribute rewards according to the binomial distributions.
-pub struct BinomialBandit<'a> {
+pub struct BinomialBandit {
     /// Vector of number of trials of a `yes-no` experiment.
-    nums: &'a Vec<u32>,
+    nums: Vec<u32>,
 
     /// Vector of experiment success probabilities.
-    probs: &'a Vec<f64>,
+    probs: Vec<f64>,
 
     /// Number of arms on the bandit.
     arms: usize,
@@ -22,36 +22,37 @@ pub struct BinomialBandit<'a> {
     distributions: Vec<Binomial>,
 }
 
-impl<'a> BinomialBandit<'a> {
+impl BinomialBandit {
     /// Initializes a new Bandit where each arm distributes rewards according to a binomial
     /// distribution.
-    pub fn new(nums: &'a Vec<u32>, probs: &'a Vec<f64>) -> BinomialBandit<'a> {
+    pub fn new(nums: Vec<u32>, probs: Vec<f64>) -> Self {
         assert_eq!(nums.len(), probs.len());
         assert!(probs.val_max() <= 1.0);
         assert!(probs.val_min() >= 0.0);
         assert!(nums.val_min() > 0);
         let dist = nums
             .iter()
-            .zip(probs)
+            .zip(&probs)
             .map(|(&n, &p)| Binomial::new(u64::from(n), p).unwrap())
             .collect();
         let best_arm = nums
             .iter()
-            .zip(probs)
+            .zip(&probs)
             .map(|(&n, &p)| f64::from(n) * p)
             .collect::<Vec<f64>>()
             .arg_max();
+        let arms = nums.len();
         BinomialBandit {
             nums,
             probs,
-            arms: nums.len(),
+            arms,
             best_arm,
             distributions: dist,
         }
     }
 }
 
-impl<'a> Bandit<u32> for BinomialBandit<'a> {
+impl Bandit<u32> for BinomialBandit {
     ///Returns the number of arms on the bandit.
     fn arms(&self) -> usize {
         self.arms
@@ -89,7 +90,7 @@ mod tests {
     fn test_arms() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(nums_vec, probs_vec);
         assert_eq!(binom.arms(), 5)
     }
 
@@ -97,7 +98,7 @@ mod tests {
     fn test_best_arm() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(nums_vec, probs_vec);
         assert_eq!(binom.best_arm(), 4)
     }
 
@@ -105,7 +106,7 @@ mod tests {
     fn test_max_reward() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(nums_vec, probs_vec);
         assert_approx_eq!(binom.max_reward(), 5.7)
     }
 
@@ -113,7 +114,7 @@ mod tests {
     fn test_mean() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(nums_vec, probs_vec);
         assert_eq!(binom.mean(1), 3.64)
     }
 
@@ -121,7 +122,7 @@ mod tests {
     fn test_means() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(nums_vec, probs_vec);
         binom
             .means()
             .iter()
@@ -134,7 +135,7 @@ mod tests {
     fn test_new_big_prob() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let p = vec![0.97, 0.91, 0.77, 0.66, 1.05];
-        BinomialBandit::new(&nums_vec, &p);
+        BinomialBandit::new(nums_vec, p);
     }
 
     #[test]
@@ -142,7 +143,7 @@ mod tests {
     fn test_new_neg_prob() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let p = vec![0.97, 0.91, 0.77, 0.66, -0.05];
-        BinomialBandit::new(&nums_vec, &p);
+        BinomialBandit::new(nums_vec, p);
     }
 
     #[test]
@@ -150,14 +151,14 @@ mod tests {
     fn test_new_wrong_size() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let p = vec![0.97, 0.91, 0.77, 0.66];
-        BinomialBandit::new(&nums_vec, &p);
+        BinomialBandit::new(nums_vec, p);
     }
 
     #[test]
     fn test_reward() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(nums_vec, probs_vec);
         for _ in 0..1000 {
             binom.reward(2);
         }
@@ -167,7 +168,7 @@ mod tests {
     fn test_std() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(nums_vec, probs_vec);
         assert_approx_eq!(binom.std(1), 0.5723635)
     }
 
@@ -175,7 +176,7 @@ mod tests {
     fn test_stds() {
         let nums_vec: Vec<u32> = vec![5, 4, 1, 8, 10];
         let probs_vec: Vec<f64> = vec![0.97, 0.91, 0.77, 0.66, 0.57];
-        let binom: BinomialBandit = BinomialBandit::new(&nums_vec, &probs_vec);
+        let binom: BinomialBandit = BinomialBandit::new(nums_vec, probs_vec);
         binom
             .stds()
             .iter()
