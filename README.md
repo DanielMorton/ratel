@@ -15,7 +15,7 @@ average reward.
 A multi-armed bandit consists of a set of arms, each of which, when pulled, gives
 a reward according to some probability distribution. Any number of arms is allowed.
 There are currently five sets of distributions available; Binomial, Gaussian,
-Exponential, Gamma, and LogNormal.. Within those
+Exponential, Gamma, and LogNormal. Within those
 confines, all choices of distribution parameters are valid.
 
 ## The Agent
